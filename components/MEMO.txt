@@ -1,0 +1,4 @@
+What this folder's purpose is:
+-->
+Connect to ShadcnUI and import UI components that are simple and extremely elegant 
+to ultimately enhance the overall user experience(s) of the TAB attendees.

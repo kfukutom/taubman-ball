@@ -11,6 +11,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        "page-bg": "#000000", // black (updated for HTML)
       },
     },
   },
