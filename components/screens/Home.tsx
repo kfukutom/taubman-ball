@@ -2,7 +2,6 @@
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 import taubmanlogo from "@/assets/umich-taubman.png";
 import tab from "@/assets/tab.png";
@@ -11,7 +10,6 @@ export default function Home() {
   const [placeholder, setPlaceholder] = useState("Send away!");
   const [fadeState, setFadeState] = useState('fade-in');
   const [currentTime, setCurrentTime] = useState("");
-  const router = useRouter();
 
   const responseList = [
     "Send away!",
@@ -128,14 +126,10 @@ export default function Home() {
           </a>
         </p>
         <p className="text-xs sm:text-sm text-gray-400 mt-4">
-            <a onClick={
-              ()=>{
-                router.push("/about");
-              }
-            }
-            target="_blank"><span className="underline cursor-pointer">About</span></a> | 
-                Currently, it's <span className="text-blue-500 font-semibold">{currentTime}</span> |{" "} 
-                <a href="mailto:kfukutom@umich.edu"><span className="underline cursor-pointer">Contact</span></a>
+          <a href="https://www.michigandaily.com/news/campus-life/inaugural-taubman-architecture-ball-celebrates-creativity-outside-the-classroom/"
+              target="_blank"><span className="underline cursor-pointer">About</span></a> | 
+                              Currently, it's <span>{currentTime}{" "}</span> 
+                              | <a href="mailto:kfukutom@umich.edu"><span className="underline cursor-pointer">Contact</span></a>
         </p>
         <div className="flex justify-center items-center gap-4 mt-8 pb--1">
           <img
