@@ -60,31 +60,34 @@ export default function Home() {
     <div className="min-h-screen bg-black text-white font-[family-name:var(--font-geist-sans)]">
       <section className="relative w-full h-screen flex items-center justify-center px-6 py-12 sm:px-16 sm:py-20">
         <StarsBackground
-          className="absolute top-0 left-0 w-full h-full"
-          starDensity={0.0055}
-          allStarsTwinkle={true}
+          className="absolute top-0 left-0 w-full h-full z-1"
+          starDensity={0.02}
+          allStarsTwinkle={false}
           twinkleProbability={1}
           minTwinkleSpeed={0.5}
-          maxTwinkleSpeed={1.0}
+          maxTwinkleSpeed={0.8}
         />
         <ShootingStars
           className="absolute top-0 left-0 w-full h-full"
           minSpeed={10}
-          maxSpeed={31}
-          minDelay={4200}
-          maxDelay={8700}
+          maxSpeed={30}
+          minDelay={1000}
+          maxDelay={4100}
           starColor="#FFFFFF"
           trailColor="#9E00FF"
-          starWidth={15}
+          starWidth={30}
           starHeight={1.25}
         />
-        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-1"></div>
         <div className="relative z-20 text-center flex flex-col items-center gap-6 w-full max-w-lg">
           <h1 className="text-4xl font-bold sm:text-5xl">Welcome to the</h1>
           <h2 className="text-3xl font-semibold sm:text-4xl text-gray-300">
-            Taubman Architecture Ball!
+            <span className="text-amber-100 cursor-pointer">
+              Taubman Architecture Ball!
+            </span>
           </h2>
-          <p className="text-sm sm:text-md pb-5 text-gray-400 max-w-md">
+          <hr className="w-full border border-gray-100" />
+          <p className="text-sm sm:text-md pb-5 text-gray-400 max-w-md italic">
             It's a night of celebration, creativity, and perhaps what's to come.
           </p>
           <label
@@ -133,9 +136,10 @@ export default function Home() {
                 router.push("/about");
               }
             }
+            className="hover:text-blue-100"
             target="_blank"><span className="underline cursor-pointer">About</span></a> | 
                 Currently, it's <span className="text-blue-500 font-semibold">{currentTime}</span> |{" "} 
-                <a href="mailto:kfukutom@umich.edu"><span className="underline cursor-pointer">Contact</span></a>
+                <a onClick = { ()=> { router.push("/help"); } } className="underline cursor-pointer hover:text-blue-100 ease-in-out">Contact</a>
         </p>
         <div className="flex justify-center items-center gap-4 mt-8 pb--1">
           <img

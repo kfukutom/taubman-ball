@@ -6,6 +6,10 @@ import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 // image components:
 import taubmanlogo from "@/assets/umich-taubman.png";
 import tab from "@/assets/tab.png";
+import event from "@/assets/events.jpg";
+import students from "@/assets/events.jpeg";
+import community from "@/assets/community.jpg";
+import { AnimatedTestimonials } from "@/components/ui/animated-testimonial";
 
 export default function About() {
   const [currentTime, setCurrentTime] = useState("");
@@ -40,6 +44,30 @@ export default function About() {
                 </p>
             <p className="text-lg sm:text-xl text-gray-300 leading-relaxed mb-10">- sincerely, the eboard :)</p>
         <hr className="border-gray-600 my-10" />
+        {/* Animated Testimonal should go below */}
+        <AnimatedTestimonials
+          autoplay = {false}
+          testimonials={[
+            {
+              quote: "As a student-organized initiative, many plans executed on the night of the event were created by our wonderful students. We are proud to have such a talented and creative community, organizing this event once more.",
+              name: "",
+              designation: "A Student-Led Initiative",
+              src: students.src,
+            },
+            {
+              quote: "The Taubman Architecture Ball invites students, faculty, and staff to come together and celebrate the creativity and innovation that is at the heart of our community. We are beyond excited to have you here today with us, and there will be many exciting events coming up!",
+              name: "",
+              designation: "United as a Community",
+              src: community.src,
+            },
+            {
+              quote: "The event was previously a great success! We plan on continuing the tradition as the years go on! For now, join us for the night and let's celebrate together. And of course, there will be complimentary drinks as well as free food ;)",
+              name: "",
+              designation: "Past Event and Future Plans",
+              src: event.src,
+            }
+          ]}
+        />
         </div>
       </main>
 
