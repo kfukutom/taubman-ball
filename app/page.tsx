@@ -9,6 +9,8 @@ import tab from "@/assets/tab.png";
 export default function Home() {
   const [placeholder, setPlaceholder] = useState("Send away!");
   const [fadeState, setFadeState] = useState('fade-in');
+  const [currentTime, setCurrentTime] = useState("");
+
   const responseList = [
     "Send away!",
     "Finalizing...",
@@ -30,6 +32,24 @@ export default function Home() {
         setFadeState('fade-in');
       }, 250);
     }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const updateTime = () => {
+    const currentTime = new Date();
+    const formattedTime = currentTime.toLocaleTimeString();
+    const milliseconds = currentTime.getMilliseconds();
+    const utcTime = currentTime.toUTCString();
+
+    return formattedTime;
+  };
+
+  // For time update:
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(updateTime());
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -106,7 +126,7 @@ export default function Home() {
         <p className="text-xs sm:text-sm text-gray-400 mt-4">
           <a href="https://www.michigandaily.com/news/campus-life/inaugural-taubman-architecture-ball-celebrates-creativity-outside-the-classroom/"
               target="_blank"><span className="underline cursor-pointer">About</span></a> | 
-                              Currently, it's <span>{new Date().toLocaleTimeString()}{" "}</span> 
+                              Currently, it's <span>{currentTime}{" "}</span> 
                               | <a href="mailto:kfukutom@umich.edu"><span className="underline cursor-pointer">Contact</span></a>
         </p>
         <div className="flex justify-center items-center gap-4 mt-8">
