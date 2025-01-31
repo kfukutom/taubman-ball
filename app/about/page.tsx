@@ -33,16 +33,17 @@ export default function About() {
       <main className="flex-grow flex flex-col items-center justify-center p-10">
         <div className="max-w-3xl text-center">
             <h1 className="text-4xl sm:text-5xl font-bold mb-6">
-                About <span className="text-blue-500">TAB</span>
+                About <span className="text-blue-300">TAB</span>
             </h1>
-            <p className="text-sm sm:text-xs text-white-200 leading-relaxed pb-3">2000 Boinsteel Blvd, 700pm - 1000pm</p>
+            <p className="text-sm sm:text-xs text-gray-400 leading-relaxed pb-3">2000 Boinsteel Blvd, 700pm - 1000pm</p>
                 <p className="text-lg sm:text-xl text-gray-300 leading-relaxed mb-10">
                     "TAB (Taubman Architecture Ball) is a celebration of architecture,
                     design, and creativity, hosted by the students of the Taubman
                     College of Architecture and Urban Planning. Join us for a night of
                     inspiration, collaboration, and bonding."
                 </p>
-            <p className="text-lg sm:text-xl text-gray-300 leading-relaxed mb-10">- sincerely, the eboard :)</p>
+                
+            <p className="text-lg sm:text-xl text-gray-300 leading-relaxed mb-10">- sincerely, the <span className="font-mono">e</span>board :)</p>
         <hr className="border-gray-600 my-10" />
         {/* Animated Testimonal should go below */}
         <AnimatedTestimonials
@@ -70,7 +71,6 @@ export default function About() {
         />
         </div>
       </main>
-
       <footer className="bg-black w-full text-center py-8">
         <p className="text-sm sm:text-md text-gray-300 max-w-lg mx-auto mb-4">
           Join us to celebrate architecture, design, and creativity!
