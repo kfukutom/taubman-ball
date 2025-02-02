@@ -3,12 +3,15 @@ import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import writeToDb from "@/backend/api/handleSubmitName";
+
 import Input from "@/components/ui/input-output/Input";
 import Link from 'next/link';
 import Image from 'next/image';
 
 import taubmanlogo from "@/assets/umich-taubman.png";
 import tab from "@/assets/tab.png";
+import { write } from "fs";
 
 export default function Home() {
   const [placeholder, setPlaceholder] = useState("Send away!");
@@ -17,7 +20,7 @@ export default function Home() {
   const [showNamePrompt, setShowNamePrompt] = useState(false);
   const [fictitiousName, setFictitiousName] = useState("");
   const router = useRouter();
-  const modalRef = useRef(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const responseList = [
     "Send away!",
@@ -69,16 +72,25 @@ export default function Home() {
     setShowNamePrompt(true);
   };
 
-  const handleSubmitName = () => {
-    if (fictitiousName.trim().length > 0) {
-      console.log(`Fictitious Name: ${fictitiousName}`);
-      console.log(`Response: ${inputValue}`);
-      //setShowNamePrompt(false);
+  const handleSubmitName = async () => {
+    try {
+      await writeToDb(fictitiousName, inputValue);
+      console.log("Data saved to Firestore");
       router.push("/about");
+    } catch (error) {
+      console.error("Error saving to Firestore:", error);
     }
   };
 
-  const handleOutsideClick = (e) => {
+  interface ResponseList {
+    responseList: string[];
+  }
+
+  interface HandleOutsideClickEvent extends MouseEvent {
+    target: EventTarget & HTMLDivElement;
+  }
+
+  const handleOutsideClick = (e: HandleOutsideClickEvent) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
       setShowNamePrompt(false);
     }
@@ -88,7 +100,7 @@ export default function Home() {
     <div className="min-h-screen font-[family-name:var(--font-geist-sans)] bg-black text-white relative">
       <StarsBackground
         className="absolute top-0 left-0 w-full h-full z-2"
-        starDensity={0.012}
+        starDensity={0.0054}
         allStarsTwinkle={false}
         twinkleProbability={1}
         minTwinkleSpeed={0.5}
