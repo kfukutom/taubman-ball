@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import writeToDb from "@/backend/api/handleSubmitName";
 
+// UI Components with ShadcnUI / Tailwind CSS
 import Input from "@/components/ui/input-output/Input";
 import Link from 'next/link';
 import Image from 'next/image';
@@ -12,6 +13,7 @@ import Image from 'next/image';
 import taubmanlogo from "@/assets/umich-taubman.png";
 import tab from "@/assets/tab.png";
 import { write } from "fs";
+import { Meteors } from "@/components/screens/meteors";
 
 export default function Home() {
   const [placeholder, setPlaceholder] = useState("Send away!");
@@ -159,27 +161,39 @@ export default function Home() {
       </section>
 
       {showNamePrompt && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out flex items-center justify-center z-30" onClick={handleOutsideClick}>
-          <div ref={modalRef} className="bg-neutral-900 text-white 
-              p-6 rounded-lg shadow-xl w-96 text-center transform transition-all duration-300 ease-in-out scale-95 opacity-0 translate-y-4">
-            <h2 className="text-xl font-semibold pb-1">Enter a Fictitious Name</h2>
-            <p className="text-xs pb-5 text-gray-400">We're asking for this to store and visualize your response!</p>
-            <input
-              type="text"
-              value={fictitiousName}
-              onChange={(e) => setFictitiousName(e.target.value)}
-              maxLength={50}
-              className="w-full p-2 font-mono text-black rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="/your fictitious name"
-            />
-            <button
-              onClick={handleSubmitName}
-              className="mt-4 px-4 py-2 w-70 rounded-md border border-neutral-700 bg-neutral-700 text-neutral-300 text-sm hover:bg-neutral-600 hover:text-neutral-100 hover:translate-y-1 transform transition duration-200 hover:shadow-lg"
-            >
-              Confirm & Proceed 🚀
-            </button>
-          </div>
+        <div
+        className="fixed inset-0 bg-black bg-opacity-60 transition-opacity duration-300 ease-in-out flex items-center justify-center z-30"
+        onClick={handleOutsideClick}
+      >
+        <div
+          ref={modalRef}
+          className="relative bg-gradient-to-br from-gray-800 to-gray-900 text-white p-8 rounded-2xl shadow-2xl border border-gray-700 w-96 text-center transform transition-all duration-300 ease-in-out scale-95 opacity-0 translate-y-4"
+        >
+          <h2 className="text-2xl font-bold pb-2 drop-shadow-md">
+            Enter a Fictitious Name
+          </h2>
+          <hr className="border-gray-500 mt-1 mb-4" />
+          <p className="text-sm pb-5 text-gray-400">
+            We're asking for this to store and visualize your response! <span className="text-gray-500 italic underline">P.S. it's all anonymous.</span>
+          </p>
+          <input
+            type="text"
+            value={fictitiousName}
+            onChange={(e) => setFictitiousName(e.target.value)} // Any type-casted value works, i think(s)
+            maxLength={50}
+            className="w-full p-3 font-mono text-black rounded-md border border-gray-600 bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
+            placeholder="Your fictious name here..."
+          />
+          <button
+            onClick={handleSubmitName}
+            className="mt-6 px-7 py-3 rounded-lg border border-transparent bg-gradient-to-r from-blue-700 to-blue-900 text-white text-sm font-semibold hover:from-blue-700 hover:to-blue-900 transform 
+            ease-in-out transition duration-200 hover:shadow-md">
+            
+            Confirm and Finalize!  &nbsp;🚀
+
+          </button>
         </div>
+      </div>      
       )}
     </div>
 
