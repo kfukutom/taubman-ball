@@ -76,7 +76,7 @@ export default function Home() {
     try {
       await writeToDb(fictitiousName, inputValue);
       console.log("Data saved to Firestore");
-      router.push("/about");
+      router.push("/dashboard");
     } catch (error) {
       console.error("Error saving to Firestore:", error);
     }
@@ -182,5 +182,6 @@ export default function Home() {
         </div>
       )}
     </div>
+
   );
 }

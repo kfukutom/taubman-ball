@@ -25,7 +25,7 @@ const writeToDb = async (fictitiousName: string, inputValue: string): Promise<vo
       throw error;
     }
   } else {
-    throw new Error("Both fictitious name and response are required.");
+    throw new Error("Please enter both a response and a fictitious name.");
   }
 };
 
