@@ -7,6 +7,11 @@ import { db } from "@/backend/firebase-config";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { ShootingStars } from "@/components/ui/shooting-stars";
 
+
+// Image Assets:
+import Image from "next/image";
+import Earth from "@/assets/corner-earth.png";
+
 interface Response {
   fictitiousName: string;
   response: string;
@@ -17,13 +22,22 @@ export default function Dashboard() {
   const [responses, setResponses] = useState<Response[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [likes, setLikes] = useState<number[]>([]);
+  // State to control the fade-in animation for the Earth image
+  const [earthVisible, setEarthVisible] = useState(false);
+
+  // fade trigger w/ state updates and changes
+  useEffect(() => {
+    setEarthVisible(true);
+  }, []);
 
   useEffect(() => {
-    // Fetch responses from Firestore
+    // firestore fetch responses:
     const fetchResponses = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "responses"));
-        const fetchedResponses = querySnapshot.docs.map((doc) => doc.data() as Response);
+        const fetchedResponses = querySnapshot.docs.map(
+          (doc) => doc.data() as Response
+        );
         setResponses(fetchedResponses);
         // Initialize likes for each response with 0
         setLikes(new Array(fetchedResponses.length).fill(0));
@@ -36,9 +50,10 @@ export default function Dashboard() {
   }, []);
 
   // Filter responses based on search query
-  const filteredResponses = responses.filter((item) =>
-    item.response.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.fictitiousName.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredResponses = responses.filter(
+    (item) =>
+      item.response.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.fictitiousName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleLike = (index: number) => {
@@ -72,10 +87,10 @@ export default function Dashboard() {
         starHeight={2.25}
       />
 
-
       <div className="relative z-10 flex flex-col items-center p-8">
-
-        <h1 className="text-3xl font-bold mb-6 drop-shadow-md">How We Feeling?</h1>
+        <h1 className="text-3xl font-bold mb-6 drop-shadow-md">
+          How We Feeling?
+        </h1>
 
         <div className="relative w-full max-w-lg mb-8">
           <input
@@ -101,14 +116,18 @@ export default function Dashboard() {
           </svg>
         </div>
 
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl">
           {filteredResponses.map((item, index) => (
             <div
               key={index}
-              className="p-5 bg-gray-700 rounded-md shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ease-in-ease-out transform"
+              className="p-5 bg-gray-700 rounded-md shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ease-in-out transform"
             >
               <p>
-                <span className="font-bold text-amber-100">{item.fictitiousName}</span> says:
+                <span className="font-bold text-amber-100">
+                  {item.fictitiousName}
+                </span>{" "}
+                says:
               </p>
               <div className="mt-2">
                 <hr className="border-gray-600 mt-1 mb-1" />
@@ -138,6 +157,17 @@ export default function Dashboard() {
             </div>
           ))}
         </div>
+      </div>
+      <div
+        className={`fixed bottom-0 right-0 transition-opacity duration-1000 ${
+          earthVisible ? "opacity-90" : "opacity-0"
+        }`}
+        style={{
+          width: "25rem",
+          filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.4))",
+        }}
+      >
+        <Image src={Earth} alt="Earth" layout="responsive" />
       </div>
     </div>
   );
