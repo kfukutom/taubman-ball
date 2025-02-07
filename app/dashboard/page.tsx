@@ -8,7 +8,7 @@ import Image from "next/image";
 
 import { StarsBackground } from "@/components/ui/stars-background";
 import { ShootingStars } from "@/components/ui/shooting-stars";
-import Earth from "@/assets/corner-earth.png";
+//import Earth from "@/assets/corner-earth.png";
 import tab from "@/assets/tab.png";
 
 interface Response {
@@ -158,7 +158,7 @@ export default function Dashboard() {
             filter: "drop-shadow(0 0 12px rgba(255, 255, 255, 0.5))",
             }}
         >
-            <Image src={Earth} alt="Earth" layout="responsive" priority />
+            {/*<Image src={Earth} alt="Earth" layout="responsive" priority />*/}
         </div>
         </div>
     );
