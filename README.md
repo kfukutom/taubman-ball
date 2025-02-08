@@ -1,3 +1,7 @@
+## Our Team + Contacts
+Jack Bernard (PM), Swasti Hiremani (UI, UX), Ken Fukutomi (Platform)
+Contact: `kfukutom@umich.edu`
+
 ## Getting Started
 
 First, run the development server:
