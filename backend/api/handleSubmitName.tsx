@@ -14,6 +14,14 @@ const writeToDb = async (fictitiousName: string, inputValue: string): Promise<vo
         likesLeft: 3,
       });
 
+      await setDoc(doc(db, "likes", docId), {
+        fictitiousName,
+        response: inputValue,
+        timestamp: new Date().toISOString(),
+        likesPerPost: 0,
+        likesLeft: 3,
+      });
+
       console.log("Data saved to Firestore");
     } catch (error) {
       console.error("Error saving to Firestore:", error);
