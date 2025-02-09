@@ -7,7 +7,7 @@ function generateID(): string {
     return Date.now().toString(36) + Math.random().toString(36).substring(2);
 }
 
-async function createSession(username: string): promies<void> {
+async function createSession(username: string): promises<void> {
     const db = getDatabase();
     const sessionID = generateID();
 

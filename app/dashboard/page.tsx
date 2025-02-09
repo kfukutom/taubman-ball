@@ -4,13 +4,10 @@ import { useRouter } from "next/navigation";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "@/backend/firebase-config";
 
-// More Assets, i entire rewrote:
 import Image from "next/image";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { ShootingStars } from "@/components/ui/shooting-stars";
-//import tab from "@/assets/tab.png"; <-- rm
 
-// what the user sees: (ken)
 interface Response {
   id: string;
   fictitiousName: string;
@@ -84,10 +81,24 @@ export default function Dashboard() {
       <StarsBackground className="absolute inset-0 z-0" starDensity={0.0054} allStarsTwinkle={false} twinkleProbability={1} minTwinkleSpeed={0.5} maxTwinkleSpeed={0.8} />
       <ShootingStars className="absolute inset-0 z-0" minSpeed={5} maxSpeed={30} minDelay={3000} maxDelay={6000} starColor="#FFFFFF" trailColor="#9E00FF" starWidth={30} starHeight={2.25} />
 
-      <div className="relative z-10 flex flex-col items-center p-8">
-        <h1 className="text-4xl font-sans mb-8 text-yellow-200 drop-shadow-glow">how we feelin'?</h1>
+      <div className="relative z-10 flex flex-col items-center p-1">
+        <h1 className="text-4xl cursor-pointer font-sans mt-3 mb-3 text-yellow-200 drop-shadow-glow">how we feelin'?!</h1>
+        <div className="flex flex-row items-center gap-4 mb-4">
+          <a className="text-md cursor-pointer text-gray-300 hover:text-yellow-300 transition duration-300" 
+                        onClick={() => router.push("/about")}>
+            about
+          </a>
+          <p>|</p>
+          <a className="text-md cursor-pointer text-gray-300 hover:text-blue-200 transition duration-300" onClick={() => router.push("/help")}>
+            help
+          </a>
+          <p>|</p>
+          <a className="text-md cursor-pointer text-gray-300 hover:text-orange-200 transition duration-300" onClick={() => router.push("/main")}>
+            contact
+          </a>
+        </div>
 
-        <div className="relative w-full max-w-lg mb-10">
+        <div className="relative w-full max-w-lg mb-10 px-4 sm:px-0">
           <input
             type="text"
             placeholder="Search responses..."
@@ -96,7 +107,7 @@ export default function Dashboard() {
             className="w-full pl-12 pr-4 py-3 rounded-full text-gray-500 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black-500 transition duration-300 shadow-md"
           />
           <svg
-            className="w-6 h-6 absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500"
+            className="w-6 h-6 absolute top-1/2 left-8 sm:left-4 transform -translate-y-1/2 text-gray-500"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -111,18 +122,19 @@ export default function Dashboard() {
           </svg>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+        {/* Responses completely fixed: */}
+        <div className="flex pb-10 flex-wrap justify-center gap-8 w-full max-w-6xl">
           {filteredResponses.map((item, index) => (
             <div
               key={index}
-              className="relative w-[350px] max-w-full rounded-2xl border border-b-0 flex-shrink-0 border-slate-700 px-8 py-6 md:w-[450px] transition-transform duration-300 hover:-translate-y-2"
+              className="w-[350px] max-w-full rounded-2xl border border-b-0 flex-shrink-0 border-slate-700 px-4 py-4 sm:px-8 sm:py-6 md:w-[450px] transition-transform duration-300 hover:-translate-y-2"
               style={{ background: "linear-gradient(180deg, var(--slate-800), var(--slate-900))" }}
             >
               <blockquote>
                 <span className="relative z-20 text-sm leading-[1.6] text-gray-100 font-normal">{item.response}</span>
                 <div className="relative z-20 mt-2 flex flex-row items-center">
                   <span className="flex flex-col gap-1">
-                    <span className="text-sm leading-[1.6] text-gray-400 font-normal">{item.fictitiousName}</span>
+                    <span className="text-sm leading-[1.6] text-gray-400 font-normal">@{item.fictitiousName}</span>
                   </span>
                 </div>
               </blockquote>
