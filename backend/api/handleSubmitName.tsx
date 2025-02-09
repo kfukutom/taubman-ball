@@ -1,13 +1,6 @@
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/backend/firebase-config";
 
-/**
- * Writes a user's response and fictitious name to Firestore
- * @param {string} fictitiousName - The fictitious name entered by the user
- * @param {string} inputValue - The user's response
- * @returns {Promise<void>} - Resolves when the data is written
- */
-
 const writeToDb = async (fictitiousName: string, inputValue: string): Promise<void> => {
   if (fictitiousName.trim().length > 0 && inputValue.trim().length > 0) {
     try {
@@ -17,6 +10,16 @@ const writeToDb = async (fictitiousName: string, inputValue: string): Promise<vo
         fictitiousName,
         response: inputValue,
         timestamp: new Date().toISOString(),
+        likesPerPost: 0,
+        likesLeft: 3,
+      });
+
+      await setDoc(doc(db, "likes", docId), {
+        fictitiousName,
+        response: inputValue,
+        timestamp: new Date().toISOString(),
+        likesPerPost: 0,
+        likesLeft: 3,
       });
 
       console.log("Data saved to Firestore");
