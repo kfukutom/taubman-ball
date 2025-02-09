@@ -81,8 +81,11 @@ export default function Dashboard() {
       <StarsBackground className="absolute inset-0 z-0" starDensity={0.0054} allStarsTwinkle={false} twinkleProbability={1} minTwinkleSpeed={0.5} maxTwinkleSpeed={0.8} />
       <ShootingStars className="absolute inset-0 z-0" minSpeed={5} maxSpeed={30} minDelay={3000} maxDelay={6000} starColor="#FFFFFF" trailColor="#9E00FF" starWidth={30} starHeight={2.25} />
 
-      <div className="relative z-10 flex flex-col items-center p-1">
-        <h1 className="text-4xl cursor-pointer font-sans mt-3 mb-3 text-yellow-200 drop-shadow-glow">how we feelin'?!</h1>
+      <div className="relative z-10 flex flex-col items-center p-3">
+        <h1 className="text-4xl cursor-pointer font-sans mt-3 
+        mb-3 text-yellow-200 drop-shadow-glow">
+          how we feelin'?!
+        </h1>
         <div className="flex flex-row items-center gap-4 mb-4">
           <a className="text-md cursor-pointer text-gray-300 hover:text-yellow-300 transition duration-300" 
                         onClick={() => router.push("/about")}>
@@ -94,7 +97,7 @@ export default function Dashboard() {
           </a>
           <p>|</p>
           <a className="text-md cursor-pointer text-gray-300 hover:text-orange-200 transition duration-300" onClick={() => router.push("/main")}>
-            contact
+            etc!
           </a>
         </div>
 
