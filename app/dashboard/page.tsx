@@ -162,6 +162,7 @@ export default function Dashboard() {
         </div>
       </div>
       {/* lets add a footer */}
+
       <Footer />
     </div>
   );
