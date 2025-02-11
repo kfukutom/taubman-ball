@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
-import { db } from "@/backend/firebase-config";
+import {db} from "@/backend/firebase-config"
 
 import Image from "next/image";
 import { StarsBackground } from "@/components/ui/stars-background";
@@ -89,15 +89,15 @@ export default function Dashboard() {
         <div className="flex flex-row items-center gap-4 mb-4">
           <a className="text-md cursor-pointer text-gray-300 hover:text-yellow-300 transition duration-300" 
                         onClick={() => router.push("/about")}>
-            about
+            /about
           </a>
           <p>|</p>
           <a className="text-md cursor-pointer text-gray-300 hover:text-blue-200 transition duration-300" onClick={() => router.push("/help")}>
-            help
+            /help
           </a>
           <p>|</p>
           <a className="text-md cursor-pointer text-gray-300 hover:text-orange-200 transition duration-300" onClick={() => router.push("/main")}>
-            etc!
+            /survey
           </a>
         </div>
 
