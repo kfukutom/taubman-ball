@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
-import {db} from "@/backend/firebase-config"
+import {db} from "@/backend/firebase-config";
 
 import Image from "next/image";
 import { StarsBackground } from "@/components/ui/stars-background";
