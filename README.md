@@ -1,10 +1,16 @@
-## Our Team + Contacts
-Jack Bernard (PM), Swasti Hiremani (UI, UX), Ken Fukutomi (Platform)
-Contact: `kfukutom@umich.edu`
+# Our Team + Contacts
 
-## Getting Started
+- **Jack Bernard** (Project Manager)
+- **Swasti Hiremani** (UI/UX)
+- **Ken Fukutomi** (Platform)
 
-First, run the development server:
+**Contact:** `taubmanarchball@umich.edu`
+
+---
+
+## Getting Started  
+
+First, run the development server:  
 
 ```bash
 npm run dev
@@ -16,11 +22,18 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Note:** Please ensure all required dependencies and packages are installed before running the project locally.  
 
-## Deployment Modules
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Gist  
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This program aims to create an interactive digital environment for **Taubman College students** to engage with an event that is both **digitally compelling** and **seamlessly integrated**. The system is designed for **one-on-one user interactions**, with an expected **one-night user count of approximately 300**.  
+
+### Key Features:  
+- **Database retrieval** for efficient data access  
+- **Fast path searching** for optimized event navigation  
+- **Filtering and querying** of user responses  
+- **Modern UI** built with **AceternityUI**  
+
+This project is **open-source**, and we welcome any contributions to improve the system further!
