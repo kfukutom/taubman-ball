@@ -7,6 +7,7 @@ import {db} from "@/backend/firebase-config";
 import Image from "next/image";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { ShootingStars } from "@/components/ui/shooting-stars";
+import Footer from "@/components/ui/Footer";
 
 interface Response {
   id: string;
@@ -30,6 +31,7 @@ export default function Dashboard() {
 
   const fetchResponses = async () => {
     try {
+      // Loading Screen
       const querySnapshot = await getDocs(collection(db, "responses"));
       const fetchedResponses = querySnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -71,7 +73,9 @@ export default function Dashboard() {
         updatedLiked[index] = true;
         return updatedLiked;
       });
+
     } catch (error) {
+      //console.warn("Error updating likes:", error);
       console.error("Error updating likes:", error);
     }
   };
@@ -83,7 +87,7 @@ export default function Dashboard() {
 
       <div className="relative z-10 flex flex-col items-center p-3">
         <h1 className="text-4xl cursor-pointer font-sans mt-3 
-        mb-3 text-yellow-200 drop-shadow-glow">
+        mb-3 text-arial text-yellow-200 drop-shadow-glow">
           how we feelin'?!
         </h1>
         <div className="flex flex-row items-center gap-4 mb-4">
@@ -157,6 +161,8 @@ export default function Dashboard() {
           ))}
         </div>
       </div>
+      {/* lets add a footer */}
+      <Footer />
     </div>
   );
 }
