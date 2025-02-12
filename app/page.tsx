@@ -110,7 +110,7 @@ export default function Home() {
       />
       <ShootingStars
         className="absolute top-0 left-0 w-full h-full"
-        minSpeed={5}
+        minSpeed={15}
         maxSpeed={30}
         minDelay={3000}
         maxDelay={8000}
@@ -124,22 +124,25 @@ export default function Home() {
         <div className="relative z-20 text-center flex flex-col items-center gap-6 w-full max-w-lg">
           <h1 className="text-4xl font-bold sm:text-5xl">Welcome to the</h1>
           <h2 className="text-3xl font-semibold sm:text-4xl text-gray-300">
-            <span className="text-amber-200 cursor-pointer">
-              Taubman <span className="font-semibold text-amber-200">Architecture</span> Ball!
+            <span className="text-amber-300 cursor-pointer">
+              Taubman <span className="font-semibold text-amber-300">Architecture</span> Ball!
             </span>
           </h2>
           <p className="text-sm sm:text-md pb-0 text-gray-400 max-w-md italic">
             It's a night of celebration, creativity, and perhaps what's to come.
           </p>
-          <label className="text-md sm:text-lg text-gray-300 mt-4">
-            <span className="text-amber-300">Prompt,</span> What brings you here today?
+          <label className="text-md sm:text-lg text-gray-300 mt-5 
+          bg-gray-800 p-3 rounded-md hover:scale-105 transform transition duration-200">
+            <span className="text-amber-300">Prompt,</span> How do you define the future of architecture?
           </label>
           <Input placeholder={placeholder} inputValue={inputValue} setInputValue={setInputValue} />
           <button
             onClick={handleShipResponse}
-            className="px-4 py-2 rounded-md border border-neutral-700 bg-neutral-800 text-neutral-300 text-sm hover:bg-neutral-600 hover:text-neutral-100 hover:-translate-y-1 transform transition duration-200 hover:shadow-lg"
+            className="px-4 py-2 rounded-md border border-neutral-700 bg-neutral-800 text-neutral-300 text-sm hover:bg-neutral-600 
+            hover:text-neutral-100 hover:-translate-y-1 transform transition duration-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-neutral-500"
           >
             Ship My Response 🚀
+            {/* <span className="text-2xl ml-2">🚀</span> */}
           </button>
         </div>
       </section>
@@ -162,7 +165,8 @@ export default function Home() {
 
       {showNamePrompt && (
         <div
-        className="fixed inset-0 bg-black bg-opacity-60 transition-opacity duration-300 ease-in-out flex items-center justify-center z-30"
+        className="fixed inset-0 bg-black bg-opacity-60 transition-opacity duration-300 ease-in-out flex 
+        items-center justify-center z-30 backdrop-filter backdrop-blur-sm"
         onClick={handleOutsideClick}
       >
         <div
