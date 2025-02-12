@@ -87,8 +87,8 @@ export default function Dashboard() {
 
       <div className="relative z-10 flex flex-col items-center p-3">
         <h1 className="text-4xl cursor-pointer font-sans mt-3 
-        mb-3 text-arial text-yellow-200 drop-shadow-glow">
-          how we feelin'?!
+        mb-3 text-arial text-amber-300 drop-shadow-glow">
+          Here's What People are Saying!
         </h1>
         <div className="flex flex-row items-center gap-4 mb-4">
           <a className="text-md cursor-pointer text-gray-300 hover:text-yellow-300 transition duration-300" 
@@ -105,7 +105,9 @@ export default function Dashboard() {
           </a>
         </div>
 
-        <div className="relative w-full max-w-lg mb-10 px-4 sm:px-0">
+       {/* <hr className="w-1/2 border border-white-500" />*/}
+
+        <div className="relative w-full max-w-lg mb-10 px-4 pt-4 sm:px-0">
           <input
             type="text"
             placeholder="Search responses..."
@@ -162,7 +164,6 @@ export default function Dashboard() {
         </div>
       </div>
       {/* lets add a footer */}
-
       <Footer />
     </div>
   );
