@@ -13,7 +13,9 @@ import Image from 'next/image';
 import taubmanlogo from "@/assets/umich-taubman.png";
 import tab from "@/assets/tab.png";
 import { write } from "fs";
+
 import { Meteors } from "@/components/screens/meteors";
+import { HashLoader } from 'react-spinners';
 
 export default function Home() {
   const [placeholder, setPlaceholder] = useState("Send away!");
@@ -23,6 +25,9 @@ export default function Home() {
   const [fictitiousName, setFictitiousName] = useState("");
   const router = useRouter();
   const modalRef = useRef<HTMLDivElement>(null);
+
+  // react spinner module
+  let [loading, setLoading] = useState(false);
 
   const responseList = [
     "Send away!",
@@ -75,12 +80,17 @@ export default function Home() {
   };
 
   const handleSubmitName = async () => {
+    setLoading(true);
     try {
       await writeToDb(fictitiousName, inputValue);
       console.log("Data saved to Firestore");
       router.push("/dashboard");
     } catch (error) {
       console.error("Error saving to Firestore:", error);
+      // debug:
+      router.push("/error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -198,6 +208,11 @@ export default function Home() {
           </button>
         </div>
       </div>      
+      )}
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
+          <HashLoader color="#FFEE58" loading={loading} size={50} />
+        </div>
       )}
     </div>
 
