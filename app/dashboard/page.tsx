@@ -86,7 +86,7 @@ export default function Dashboard() {
       <ShootingStars className="absolute inset-0 z-0" minSpeed={5} maxSpeed={30} minDelay={3000} maxDelay={6000} starColor="#FFFFFF" trailColor="#9E00FF" starWidth={30} starHeight={2.25} />
 
       <div className="relative z-10 flex flex-col items-center p-3">
-        <h1 className="text-4xl cursor-pointer font-sans mt-3 
+        <h1 className="text-4xl cursor-pointer font-sans mt-10
         mb-3 text-arial text-amber-300 drop-shadow-glow">
           Here's What People are Saying!
         </h1>
