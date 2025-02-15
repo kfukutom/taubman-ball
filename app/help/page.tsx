@@ -12,7 +12,7 @@ export default function HelpPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-black text-white flex items-center justify-center">
+    <div className="relative min-h-screen overflow-y-hidden bg-black text-white flex items-center justify-center">
       <div className="absolute inset-0 z-0">
         <Vortex
           backgroundColor="black"
