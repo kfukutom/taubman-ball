@@ -119,16 +119,6 @@ export default function Dashboard() {
         )}
       </div>
 
-      <div className="fixed left-4 md:left-6 top-0 h-screen w-0.5 bg-gray-800/30 z-[5] pointer-events-none">
-        <div
-          className="absolute w-full 
-          bg-gradient-to-b from-white/80 via-gray-200/70 to-gray-300/80 
-          transition-all duration-300"
-
-          style={{ height: `${scrollProgress}%` }}
-        />
-      </div>
-
       <div className="relative z-10 min-h-screen overflow-y-auto">
         <div className="flex flex-col items-center p-3">
           <h1 className="text-4xl cursor-pointer font-mono mt-10 mb-4 text-arial text-amber-300 drop-shadow-glow">
