@@ -6,9 +6,10 @@ import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 // image components:
 import taubmanlogo from "@/assets/umich-taubman.png";
 import tab from "@/assets/tab.png";
-import event1 from "@/assets/slider-photos/event-photo-1.jpeg";
-import event from "@/assets/slider-photos/event-photo-2.jpg";
-import event3 from "@/assets/slider-photos/event-photo-4.png";
+import event1 from "@/assets/slider-photos/events-1.jpeg";
+import event from "@/assets/slider-photos/events-2.jpg";
+import event3 from "@/assets/slider-photos/events-3.png";
+// .. add more photos later, swasti  {DONE}
 
 // Animated Modals;
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonial";
