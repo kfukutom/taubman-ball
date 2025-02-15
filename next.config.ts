@@ -2,7 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["images.app.goo.gl"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "google.com",
+      }
+    ]
   },
   eslint: {
     ignoreDuringBuilds: true,
