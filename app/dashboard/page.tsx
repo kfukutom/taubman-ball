@@ -160,7 +160,7 @@ export default function Dashboard() {
                 {/** Top post badge */}
                 {item.id === topPostId && (
                   <div className="flex items-center gap-2 bg-yellow-400/90 text-black font-bold px-4 py-1 rounded-full shadow-lg 
-                  mt-2 mx-20 self-end">
+                  mt-0 mx-20 self-end">
                     <Image
                       src={topPost}
                       alt="Top Post"
@@ -168,7 +168,7 @@ export default function Dashboard() {
                       height={20}
                       className="drop-shadow-md animate-pulse"
                     />
-                    <p className="text-sm tracking-wide">TOP POST OF THE NIGHT</p>
+                    <p className="text-sm font-mono tracking-wide">TOP POST OF THE NIGHT</p>
                   </div>
                 )}
               </div>
