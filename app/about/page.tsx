@@ -6,9 +6,12 @@ import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 // image components:
 import taubmanlogo from "@/assets/umich-taubman.png";
 import tab from "@/assets/tab.png";
-import event from "@/assets/events.jpg";
-import students from "@/assets/events.jpeg";
-import community from "@/assets/community.jpg";
+import event1 from "@/assets/slider-photos/events-1.jpeg";
+import event from "@/assets/slider-photos/events-2.jpg";
+import event3 from "@/assets/slider-photos/events-3.png";
+// .. add more photos later, swasti  {DONE}
+
+// Animated Modals;
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonial";
 import Footer from "@/components/ui/Footer";
 
@@ -89,13 +92,13 @@ export default function About() {
                 quote: "As a student-organized initiative, many plans executed on the night of the event were created by our wonderful students. We are proud to have such a talented and creative community, organizing this event once more.",
                 name: "",
                 designation: "A Student-Led Initiative",
-                src: students.src,
+                src: event1.src,
               },
               {
                 quote: "The Taubman Architecture Ball invites students, faculty, and staff to come together and celebrate the creativity and innovation that is at the heart of our community. We are beyond excited to have you here today with us, and there will be many exciting events coming up!",
                 name: "",
                 designation: "United as a Community",
-                src: community.src,
+                src: event3.src,
               },
               {
                 quote: "The event was previously a great success! We plan on continuing the tradition as the years go on! For now, join us for the night and let's celebrate together. And of course, there will be complimentary drinks as well as free food ;)",
