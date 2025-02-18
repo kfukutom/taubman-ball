@@ -1,6 +1,6 @@
 # Our Team + Contacts
 
-- **Jack B.** (Project Manager)
+- **Jack B.** (Product, Sentiment Visual)
 - **Swasti** (Design Research)
 - **Ken Fukutomi** (Platform)
 
