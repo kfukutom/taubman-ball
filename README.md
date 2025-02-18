@@ -1,7 +1,7 @@
 # Our Team + Contacts
 
-- **Jack Bernard** (Project Manager)
-- **Swasti Hiremani** (UI/UX)
+- **Jack B.** (Product & Sentiment Visuals)
+- **Swasti** (Design Research)
 - **Ken Fukutomi** (Platform)
 
 **Contact:** `taubmanarchball@umich.edu`

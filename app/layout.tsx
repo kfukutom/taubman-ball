@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "TAB 2025 ✨",
-  description: "Developed by Ken Fukutomi",
+  description: "Developed by Jack, Swasti, and Ken with ❤️",
 };
 
 export default function RootLayout({
