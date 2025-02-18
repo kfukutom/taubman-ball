@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
   }, []);
 
   return (
-    <footer className="w-full text-center py-0">
+    <footer className="w-full text-center py-0 mb-2">
       <p className="text-sm sm:text-md text-gray-300 max-w-lg mx-auto mb-4">
         Join us to celebrate architecture, design, and creativity!
       </p>

@@ -7,7 +7,6 @@ interface ResponseCardProps {
   index: number;
   handleLike: (index: number) => void;
   topPostId: string | null;
-  //topPostImage: string;
   topPostImage: StaticImageData;
 }
 
@@ -15,11 +14,24 @@ const ResponseCard: React.FC<ResponseCardProps> = ({ item, index, handleLike, to
   return (
     <div
       key={item.id}
-      className="w-[350px] max-w-full rounded-2xl border 
+      className="relative w-[350px] max-w-full rounded-2xl border 
                 border-slate-700 px-4 py-4 sm:px-8 sm:py-6 md:w-[450px] 
                 transition-transform duration-300 hover:-translate-y-2 shadow-lg hover:shadow-white/10"
       style={{ background: "linear-gradient(180deg, #1E1E1E, #121212)" }}
     >
+      {item.id === topPostId && (
+        <div className="absolute top-[-10px] right-[-10px] flex items-center gap-2 bg-yellow-400/90 text-black font-bold px-3 py-1 rounded-full shadow-lg transform rotate-[10deg] hover:rotate-[5deg] transition-transform duration-300">
+          <Image
+            src={topPostImage}
+            alt="Top Post"
+            width={20}
+            height={20}
+            className="drop-shadow-md animate-pulse"
+          />
+          <p className="text-xs font-mono tracking-wide">TOP POST 😲</p>
+        </div>
+      )}
+
       <blockquote>
         <span className="relative z-20 text-sm leading-[1.6] text-gray-100 font-normal">{item.response}</span>
         <div className="relative z-20 mt-2 flex flex-row items-center">
@@ -42,20 +54,6 @@ const ResponseCard: React.FC<ResponseCardProps> = ({ item, index, handleLike, to
           <span className="text-s">{item.likesPerPost || 0}</span>
         </button>
       </div>
-
-      {item.id === topPostId && (
-        <div className="flex items-center gap-2 bg-yellow-400/90 text-black font-bold px-4 py-1 rounded-full shadow-lg 
-        mt-0 mx-20 self-end">
-          <Image
-            src={topPostImage}
-            alt="Top Post"
-            width={20}
-            height={20}
-            className="drop-shadow-md animate-pulse"
-          />
-          <p className="text-sm font-mono tracking-wide">TOP POST OF THE NIGHT</p>
-        </div>
-      )}
     </div>
   );
 };
