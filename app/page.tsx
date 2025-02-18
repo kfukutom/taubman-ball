@@ -1,9 +1,12 @@
+// Home.tsx
 "use client";
+
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import writeToDb from "@/backend/api/handleSubmitName";
+import useSession from "@/backend/api/initSession";
 
 // UI Components with ShadcnUI / Tailwind CSS
 import Input from "@/components/ui/input-output/Input";
@@ -28,6 +31,8 @@ export default function Home() {
 
   // react spinner module
   let [loading, setLoading] = useState(false);
+
+  const { session, initializeSession, clearSession } = useSession();
 
   const responseList = [
     "Send away!",
@@ -83,12 +88,13 @@ export default function Home() {
     setLoading(true);
     try {
       await writeToDb(fictitiousName, inputValue);
+      await initializeSession(fictitiousName);
       console.log("Data saved to Firestore");
       router.push("/dashboard");
     } catch (error) {
       console.error("Error saving to Firestore:", error);
       // debug:
-      router.push("/error");
+      //router.push("/error");
     } finally {
       setLoading(false);
     }
