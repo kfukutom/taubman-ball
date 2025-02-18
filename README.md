@@ -1,6 +1,6 @@
 # Our Team + Contacts
 
-- **Jack B.** (Product & Sentiment Visuals)
+- **Jack B.** (Product, Sentiment Visual)
 - **Swasti** (Design Research)
 - **Ken Fukutomi** (Platform)
 
