@@ -1,6 +1,7 @@
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "@/backend/firebase-config";
 
+// Let this file be in tact w/ dashboard/app.tsx + ui/ResponseCard.tsx
 export interface Response {
   id: string;
   fictitiousName: string;
