@@ -4,22 +4,13 @@ import { db } from "@/backend/firebase-config";
 const writeToDb = async (fictitiousName: string, inputValue: string): Promise<void> => {
   if (fictitiousName.trim().length > 0 && inputValue.trim().length > 0) {
     try {
-      const docId = `${Date.now()}`;
+      //const docId = `${Date.now()}`; <-- no need
 
-      await setDoc(doc(db, "responses", docId), {
+      await setDoc(doc(db, "responses"), {
         fictitiousName,
         response: inputValue,
         timestamp: new Date().toISOString(),
         likesPerPost: 0,
-        likesLeft: 3,
-      });
-
-      await setDoc(doc(db, "likes", docId), {
-        fictitiousName,
-        response: inputValue,
-        timestamp: new Date().toISOString(),
-        likesPerPost: 0,
-        likesLeft: 3,
       });
 
       console.log("Data saved to Firestore");
