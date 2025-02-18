@@ -42,9 +42,10 @@ const useSession = () => {
             postsAvailable: 3, // Default like limit for new users
             likedPosts: [],
             };
-
+        
         await setDoc(userRef, newUser);
         localStorage.setItem("userSession", JSON.stringify(newUser));
+
         setSession(newUser);
         console.log("New user session saved successfully.");
       }

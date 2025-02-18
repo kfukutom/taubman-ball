@@ -1,4 +1,5 @@
 // Sessions.tsx
+// import { getDatabase, ref, set } from "firebase/database";
 import { promises } from "dns";
 import { getDatabase, ref, set } from "firebase/database";
 import { metadata } from "motion/react-client";
@@ -19,5 +20,4 @@ async function createSession(username: string): Promise<void> {
     sessionStorage.setItem('sessionID', sessionID);
     //return sessionID;
 }
-
 // Finish the Rest by Around End of Feb.
