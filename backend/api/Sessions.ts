@@ -1,3 +1,4 @@
+// Sessions.tsx
 import { promises } from "dns";
 import { getDatabase, ref, set } from "firebase/database";
 import { metadata } from "motion/react-client";
@@ -7,7 +8,7 @@ function generateID(): string {
     return Date.now().toString(36) + Math.random().toString(36).substring(2);
 }
 
-async function createSession(username: string): promises<void> {
+async function createSession(username: string): Promise<void> {
     const db = getDatabase();
     const sessionID = generateID();
 

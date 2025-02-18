@@ -1,7 +1,11 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { fetchResponses, updateLike, Response } from "@/backend/services/firebaseService";
+import { fetchResponses, updateLike, Response, updateLeftLikes} from "@/backend/services/firebaseService";
+import useSession from "@/backend/api/initSession";
+
+// UI-Components
 import { StarsBackground } from "@/components/ui/stars-background";
 import Footer from "@/components/ui/Footer";
 import SearchBar from "@/components/ui/SearchBar";
@@ -9,10 +13,14 @@ import ResponseCard from "@/components/ui/ResponseCard"
 import topPostImage from "@/assets/fire_local.png";
 import { HashLoader } from 'react-spinners';
 
+// HeroUI Component
+import { Alert } from "@/components/ui/alert";
+
 const title = "[we feelin' like...]"; // idk what fits, swasti task
 
 export default function Dashboard() {
   const router = useRouter();
+  const { session, initializeSession, clearSession, fetchSession } = useSession();
   const [responses, setResponses] = useState<Response[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -20,36 +28,59 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Disable pull-to-refresh
-    document.documentElement.style.overscrollBehavior = 'none';
-    document.body.style.overscrollBehavior = 'none';
-
-    const loadResponses = async () => {
+    const loadSessionAndResponses = async () => {
       setIsLoading(true);
-      const fetchedResponses = await fetchResponses();
-      setResponses(fetchedResponses);
-      if (fetchedResponses.length > 0) {
-        setTopPostId(fetchedResponses.reduce((prev, current) => (prev.likesPerPost > current.likesPerPost ? prev : current)).id);
+
+      //console.log("prior...", session.userId);
+      await fetchSession(); // dbeug this
+      console.log("Successfully fetched info for session");
+      let currentSession = JSON.parse(localStorage.getItem("userSession") || "null");
+
+      if (!currentSession) {
+        //await initializeSession();
+        //currentSession = JSON.parse(localStorage.getItem("userSession") || "null");
       }
+
+      if (currentSession) {
+        const fetchedResponses = await fetchResponses();
+        setResponses(fetchedResponses);
+        console.log("Fetched a total of", fetchedResponses.length, "responses.");
+
+        if (fetchedResponses.length > 0) {
+          setTopPostId(fetchedResponses.reduce((prev, current) => (prev.likesPerPost > current.likesPerPost ? prev : current)).id);
+        }
+      }
+
       setIsLoading(false);
     };
-    loadResponses();
 
-    // Clean up function
-    return () => {
-      document.documentElement.style.overscrollBehavior = '';
-      document.body.style.overscrollBehavior = '';
-    };
-  }, []);
+    loadSessionAndResponses();
+  }, []); 
+
+  useEffect(() => {
+    if (session) {
+      console.log("Session User:", session.username); // username - fictious/name
+      console.log("You can like: ", session.postsAvailable, "more posts.");
+    }
+  }, [session]); // Runs when session is set
 
   const handleLike = async (index: number) => {
+    if (!session || session.postsAvailable <= 0) {
+      // Handle case where user can't like more posts
+      return;
+    }
+
     const response = responses[index];
     await updateLike(response.id, response.likesPerPost + 1);
+    //response.likesPerPost += 1;
+    await updateLeftLikes(session.userId, session.postsAvailable - 1);
+    session.postsAvailable--;
     setResponses((prev) => {
       const updated = [...prev];
       updated[index] = { ...response, likesPerPost: response.likesPerPost + 1 };
       return updated;
     });
+    // reduce postLike from db
     setTopPostId(responses.reduce((prev, current) => (prev.likesPerPost > current.likesPerPost ? prev : current)).id);
   };
 
@@ -66,6 +97,12 @@ export default function Dashboard() {
         <StarsBackground starDensity={0.001} allStarsTwinkle={true} twinkleProbability={1} minTwinkleSpeed={0.5} maxTwinkleSpeed={0.8} />
       </div>
 
+      {/*
+      <div key="#fffff" className="w-full flex items-center my-3">
+        <Alert color="#fffff" title={`This is a ${color} alert`} />
+      </div>
+      */}
+
       <div className="relative z-10 min-h-screen overflow-y-auto">
         <div className="flex flex-col items-center p-3">
           <h1 className="text-4xl font-mono mt-10 mb-4 text-amber-300 drop-shadow-glow">{title}</h1>
@@ -75,7 +112,7 @@ export default function Dashboard() {
               <a key={path} className="text-md cursor-pointer 
               text-gray-300 hover:text-yellow-300 transition duration-300 underline" 
               onClick={() => router.push(`/${path}`)}>
-              /{path}
+                /{path}
               </a>
             ))}
           </div>
@@ -84,9 +121,7 @@ export default function Dashboard() {
 
           {isLoading ? (
             <div className="flex justify-center items-center h-64">
-
               <HashLoader color="#FFEE58" loading={isLoading} size={60} />
-
             </div>
           ) : (
             <div className="flex pb-10 flex-wrap justify-center gap-8 w-full max-w-6xl">
@@ -107,4 +142,4 @@ export default function Dashboard() {
       </div>
     </div>
   );
-}
+} // Dashboard()
