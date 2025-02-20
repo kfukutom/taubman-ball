@@ -1,3 +1,4 @@
+// handleSubmitName.tsx
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/backend/firebase-config";
 

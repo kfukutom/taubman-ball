@@ -22,7 +22,6 @@ const useSession = () => {
   const initializeSession = async (fictitiousName?: string) => {
 
     try {
-
         const userId = uuidv4(); // new uuid will be generated
         const userRef = doc(db, "users", userId);
         const userSnap = await getDoc(userRef);
