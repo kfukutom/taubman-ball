@@ -39,7 +39,7 @@ export default function Home() {
     "Finalizing...",
     "I'm here for free food!",
     "I'm here for the vibes!",
-    "What's urban technology??",
+    "Excited for the installations!",
     "Love our built environment ❤️ ",
     "Just trying to get by!",
   ];
@@ -118,7 +118,7 @@ export default function Home() {
     <div className="min-h-screen font-[family-name:var(--font-geist-sans)] bg-black text-white relative">
       <StarsBackground
         className="absolute top-0 left-0 w-full h-full z-2"
-        starDensity={0.0054}
+        starDensity={0.001}
         allStarsTwinkle={false}
         twinkleProbability={1}
         minTwinkleSpeed={0.5}
@@ -128,11 +128,11 @@ export default function Home() {
         className="absolute top-0 left-0 w-full h-full"
         minSpeed={15}
         maxSpeed={30}
-        minDelay={3000}
+        minDelay={5000}
         maxDelay={8000}
         starColor="#FFFFFF"
         trailColor="#9E00FF"
-        starWidth={30}
+        starWidth={20}
         starHeight={2.25}
       />
 
