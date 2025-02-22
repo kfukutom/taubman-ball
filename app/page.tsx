@@ -1,6 +1,9 @@
 // Home.tsx
 "use client";
 
+// filter by sentiment, add instructions to make clear
+// tree-map, matthew's recommendation (color coding based on inputs)
+
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { useState, useEffect, useRef } from "react";
@@ -137,7 +140,7 @@ export default function Home() {
       />
 
       <section className="relative w-full h-screen flex items-center justify-center px-6 py-12 sm:px-16 sm:py-20">
-        <div className="relative z-20 text-center flex flex-col items-center gap-6 w-full max-w-lg">
+        <div className="relative z-20 text-center flex flex-col items-center gap-5 w-full max-w-lg">
           <h1 className="text-4xl font-bold sm:text-5xl">Welcome to the</h1>
           <h2 className="text-3xl font-semibold sm:text-4xl text-gray-300">
             <span className="text-amber-300 cursor-pointer">
