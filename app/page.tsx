@@ -22,6 +22,7 @@ import { write } from "fs";
 
 import { Meteors } from "@/components/screens/meteors";
 import { HashLoader } from 'react-spinners';
+import Footer from "@/components/ui/Footer";
 
 export default function Home() {
   const [placeholder, setPlaceholder] = useState("Send away!");
@@ -118,26 +119,40 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen font-[family-name:var(--font-geist-sans)] bg-black text-white relative">
+    <div className="min-h-screen font-[family-name:var(--font-geist-sans)] bg-black text-white relative overflow-hidden">
+      {/* Enhanced background with more stars and meteors */}
       <StarsBackground
         className="absolute top-0 left-0 w-full h-full z-2"
-        starDensity={0.001}
-        allStarsTwinkle={false}
-        twinkleProbability={1}
+        starDensity={0.002} 
+        allStarsTwinkle={true}
+        twinkleProbability={0.8}
         minTwinkleSpeed={0.5}
-        maxTwinkleSpeed={0.8}
+        maxTwinkleSpeed={1.2}
       />
       <ShootingStars
         className="absolute top-0 left-0 w-full h-full"
         minSpeed={15}
         maxSpeed={30}
-        minDelay={5000}
-        maxDelay={8000}
+        minDelay={4000}
+        maxDelay={7000}
         starColor="#FFFFFF"
         trailColor="#9E00FF"
-        starWidth={20}
-        starHeight={2.25}
+        starWidth={24}
+        starHeight={2.5}
       />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/10 to-blue-900/20 z-1"></div>
+      <div className="absolute top-12 right-12 w-32 h-32 rounded-full bg-amber-300/5 blur-xl z-1"></div>
+      <div className="absolute bottom-24 left-12 w-48 h-48 rounded-full bg-blue-400/5 blur-xl z-1"></div>
+
+      <div className="absolute top-6 left-6 z-20 opacity-80 hover:opacity-100 transition-opacity duration-300">
+        <Image
+          src={taubmanlogo}
+          alt="Taubman College Logo"
+          width={120}
+          height={40}
+          className="object-contain"
+        />
+      </div>
 
       <section className="relative w-full h-screen flex items-center justify-center px-6 py-12 sm:px-16 sm:py-20">
         <div className="relative z-20 text-center flex flex-col items-center gap-5 w-full max-w-lg">
@@ -147,9 +162,6 @@ export default function Home() {
               Taubman <span className="font-semibold text-amber-300">Architecture</span> Ball!
             </span>
           </h2>
-          <p className="text-sm sm:text-md pb-0 text-gray-400 max-w-md italic">
-            It's a night of celebration, creativity, and perhaps what's to come.
-          </p>
           <label className="text-md sm:text-lg text-gray-300 mt-5 
           bg-gray-800 p-3 rounded-md hover:scale-105 transform transition duration-200">
             <span className="text-amber-300">Prompt,</span> How do you define the future of architecture?
@@ -164,22 +176,6 @@ export default function Home() {
             {/* <span className="text-2xl ml-2">🚀</span> */}
           </button>
         </div>
-      </section>
-
-      <section className="text-center px-6 py-8 sm:px-16 sm:py-12">
-        <p className="text-sm sm:text-md text-gray-300 max-w-lg mx-auto mb-4">
-          Join us to celebrate architecture, design, and creativity!
-        </p>
-        <p className="text-xs sm:text-sm text-gray-400">
-          <a
-            href="https://taubmancollege.umich.edu/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline"
-          >
-            © 2025 Taubman College of Architecture and Urban Planning
-          </a>
-        </p>
       </section>
 
       {showNamePrompt && (
