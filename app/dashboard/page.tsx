@@ -82,7 +82,7 @@ export default function Dashboard() {
       });
       setLikedPosts((prev) => {
         const newLikes = { ...prev, [response.id]: true };
-        localStorage.setItem("likedPosts", JSON.stringify(newLikes)); // Save to localStorage
+        localStorage.setItem("likedPosts", JSON.stringify(newLikes));
         return newLikes;
       });
     } else {
@@ -96,7 +96,7 @@ export default function Dashboard() {
       });
       setLikedPosts((prev) => {
         const newLikes = { ...prev, [response.id]: false };
-        localStorage.setItem("likedPosts", JSON.stringify(newLikes)); // Save to localStorage
+        localStorage.setItem("likedPosts", JSON.stringify(newLikes));
         return newLikes;
       });
     }
@@ -134,7 +134,7 @@ export default function Dashboard() {
             {title}
           </h1>
 
-          <div className="flex flex-row items-center gap-4 mb-3">
+          <div className="flex flex-row items-center gap-4 mb-10">
             {["about", "help", "survey"].map((path) => (
               <a
                 key={path}
@@ -146,7 +146,7 @@ export default function Dashboard() {
             ))}
           </div>
 
-          <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+          {/*<SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />*/}
 
           {isLoading ? (
             <div className="flex justify-center items-center h-64">
