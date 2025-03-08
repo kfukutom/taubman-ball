@@ -142,7 +142,7 @@ export default function Home() {
       />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/10 to-blue-900/20 z-1"></div>
       <div className="absolute top-12 right-12 w-32 h-32 rounded-full bg-amber-300/5 blur-xl z-1"></div>
-      <div className="absolute bottom-24 left-12 w-48 h-48 rounded-full bg-blue-400/5 blur-xl z-1"></div>
+
 
       <div className="absolute top-6 left-6 z-20 opacity-80 hover:opacity-100 transition-opacity duration-300">
         <Image

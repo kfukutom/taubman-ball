@@ -49,7 +49,7 @@ const ResponseCard: React.FC<ResponseCardProps> = ({
             height={16}
             className="drop-shadow-sm"
           />
-          <p className="text-xs font-medium tracking-wide">Featured</p>
+          <p className="text-xs font-medium tracking-wide">TOP COMMENT</p>
         </div>
       )}
 

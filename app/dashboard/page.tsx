@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { fetchResponses, updateLike, Response, updateLeftLikes } from "@/backend/services/firebaseService";
@@ -9,6 +8,7 @@ import useSession from "@/backend/api/initSession";
 import { StarsBackground } from "@/components/ui/stars-background";
 import Footer from "@/components/ui/Footer";
 import SearchBar from "@/components/ui/SearchBar";
+import NavigationLinks from "@/components/ui/NavigationLinks";
 import ResponseCard from "@/components/ui/ResponseCard";
 import topPostImage from "@/assets/fire_local.png";
 import { HashLoader } from "react-spinners";
@@ -16,7 +16,7 @@ import { HashLoader } from "react-spinners";
 // HeroUI Component
 import { Alert } from "@/components/ui/alert";
 
-const title = "[we feelin' like...]"; // idk what fits, swasti task
+const title = "TAB 2025 ⭐"; // idk what fits, swasti task
 
 export default function Dashboard() {
   const router = useRouter();
@@ -114,13 +114,13 @@ export default function Dashboard() {
         response.toLowerCase().includes(searchQuery.toLowerCase()) ||
         fictitiousName.toLowerCase().includes(searchQuery.toLowerCase())
     )
-    .sort((a, b) => b.likesPerPost - a.likesPerPost);
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   return (
-    <div className="min-h-screen w-screen relative bg-black text-white">
+    <div className="min-h-screen w-screen relative bg-gradient-to-b from-black to-gray-900 text-white">
       <div className="fixed inset-0 z-0 will-change-transform">
         <StarsBackground
-          starDensity={0.001}
+          starDensity={0.002}
           allStarsTwinkle={true}
           twinkleProbability={1}
           minTwinkleSpeed={0.5}
@@ -129,31 +129,31 @@ export default function Dashboard() {
       </div>
 
       <div className="relative z-10 min-h-screen overflow-y-auto">
-        <div className="flex flex-col items-center p-3">
-          <h1 className="text-4xl font-mono mt-10 mb-4 text-amber-300 drop-shadow-glow">
+        <div className="flex flex-col items-center p-6 max-w-7xl mx-auto">
+          <h1 className="text-5xl font-mono mt-12 mb-6 text-amber-300 drop-shadow-glow animate-none">
             {title}
           </h1>
 
-          <div className="flex flex-row items-center gap-4 mb-10">
-            {["about", "help", "survey"].map((path) => (
-              <a
-                key={path}
-                className="text-md cursor-pointer text-gray-300 hover:text-yellow-300 transition duration-300 underline"
-                onClick={() => router.push(`/${path}`)}
-              >
-                /{path}
-              </a>
-            ))}
-          </div>
+          {/* optional, navlink */}
+          {/*<NavigationLinks />*/}
+
+          {session && (
+            <div className="mb-8 bg-gray-800 bg-opacity-50 p-4 rounded-lg border border-gray-700">
+              <p className="text-amber-200">
+                Welcome, <span className="font-semibold">{session.username}</span>! 
+                You have <span className="font-bold text-yellow-500">{session.postsAvailable}</span> likes remaining.
+              </p>
+            </div>
+          )}
 
           {/*<SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />*/}
 
           {isLoading ? (
             <div className="flex justify-center items-center h-64">
-              <HashLoader color="#FFEE58" loading={isLoading} size={60} />
+              <HashLoader color="#FFEE58" loading={isLoading} size={80} />
             </div>
-          ) : (
-            <div className="flex pb-10 flex-wrap justify-center gap-8 w-full max-w-6xl">
+          ) : sortedResponses.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl pb-16">
               {sortedResponses.map((item) => (
                 <ResponseCard
                   key={item.id}
@@ -165,6 +165,10 @@ export default function Dashboard() {
                   isLiked={likedPosts[item.id] || false}
                 />
               ))}
+            </div>
+          ) : (
+            <div className="flex justify-center items-center h-64">
+              <p className="text-xl text-gray-400">No responses found</p>
             </div>
           )}
         </div>
