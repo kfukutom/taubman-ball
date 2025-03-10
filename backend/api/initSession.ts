@@ -1,4 +1,3 @@
-// initSession.ts --> Finalize () function
 "use client";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -30,7 +29,7 @@ const useSession = () => {
             // firebase Route:
             console.log("Existing user session found in Firestore.");
             const userData = userSnap.data() as UserSession;
-            localStorage.setItem("userSession", JSON.stringify(userData));
+            localStorage.setItem("sessionToken", userData.userId);
             setSession(userData);
         } else {
             // new sesh loading...
@@ -43,7 +42,7 @@ const useSession = () => {
             };
         
         await setDoc(userRef, newUser);
-        localStorage.setItem("userSession", JSON.stringify(newUser));
+        localStorage.setItem("sessionToken", newUser.userId);
 
         setSession(newUser);
         console.log("New user session saved successfully.");
@@ -55,28 +54,27 @@ const useSession = () => {
   };
 
   const fetchSession = async () => {
-    let storedSession = localStorage.getItem("userSession");
+    let token = localStorage.getItem("sessionToken");
 
-    if (storedSession) {
-      const sessionData: UserSession = JSON.parse(storedSession);
-      const userRef = doc(db, "users", sessionData.userId);
+    if (token) {
+      const userRef = doc(db, "users", token);
       const userSnap = await getDoc(userRef);
 
       if (userSnap.exists()) {
         console.log("Fetched session from Firestore.");
         const updatedSession = userSnap.data() as UserSession;
         setSession(updatedSession);
-        localStorage.setItem("userSession", JSON.stringify(updatedSession)); // Sync with Firestore
+        localStorage.setItem("sessionToken", updatedSession.userId); // Sync with Firestore
       } else {
         console.error("Session not found in Firestore, clearing localStorage.");
-        localStorage.removeItem("userSession");
+        localStorage.removeItem("sessionToken");
         setSession(null);
       }
     }
   };
 
   const clearSession = () => {
-    localStorage.removeItem("userSession");
+    localStorage.removeItem("sessionToken");
     setSession(null);
   };
 

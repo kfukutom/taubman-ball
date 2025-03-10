@@ -120,10 +120,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen font-[family-name:var(--font-geist-sans)] bg-black text-white relative overflow-hidden">
-      {/* Enhanced background with more stars and meteors */}
       <StarsBackground
         className="absolute top-0 left-0 w-full h-full z-2"
-        starDensity={0.002} 
+        starDensity={0.001} 
         allStarsTwinkle={true}
         twinkleProbability={0.8}
         minTwinkleSpeed={0.5}
@@ -141,9 +140,6 @@ export default function Home() {
         starHeight={2.5}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/10 to-blue-900/20 z-1"></div>
-      <div className="absolute top-12 right-12 w-32 h-32 rounded-full bg-amber-300/5 blur-xl z-1"></div>
-
-
       <div className="absolute top-6 left-6 z-20 opacity-80 hover:opacity-100 transition-opacity duration-300">
         <Image
           src={taubmanlogo}
@@ -201,7 +197,7 @@ export default function Home() {
             onChange={(e) => setFictitiousName(e.target.value)} // Any type-casted value works, i think(s)
             maxLength={50}
             className="w-full p-3 font-mono text-black rounded-md border border-gray-600 bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
-            placeholder="Your fictious name here..."
+            placeholder="A fictious name here..."
           />
           <button
             onClick={handleSubmitName}
