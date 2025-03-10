@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 const NavigationLinks = () => {
   const router = useRouter();
   return (
-    <div className="flex flex-row items-center gap-6 mb-10">
+    <div className="flex flex-row items-center gap-6 mb-4">
       {["about", "help", "survey"].map((path) => (
         <a
           key={path}

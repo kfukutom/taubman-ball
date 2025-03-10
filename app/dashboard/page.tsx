@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { fetchResponses, updateLike, Response, updateLeftLikes } from "@/backend/services/firebaseService";
 import useSession from "@/backend/api/initSession";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "@/backend/firebase-config";
 
 // UI-Components
 import { StarsBackground } from "@/components/ui/stars-background";
@@ -16,7 +18,7 @@ import { HashLoader } from "react-spinners";
 // HeroUI Component
 import { Alert } from "@/components/ui/alert";
 
-const title = "TAB 2025 ⭐"; // idk what fits, swasti task
+const title = "TAB 2025 Thread"; // idk what fits, swasti task
 
 export default function Dashboard() {
   const router = useRouter();
@@ -28,20 +30,29 @@ export default function Dashboard() {
   const [likedPosts, setLikedPosts] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
-    const loadSessionAndResponses = async () => {
+    const loadSession = async () => {
       setIsLoading(true);
       await fetchSession();
-      console.log("Successfully fetched info for session");
-      const currentSession = JSON.parse(localStorage.getItem("userSession") || "null");
+      setIsLoading(false);
+    };
+    loadSession();
+  }, []); // run once on mount
 
-      if (currentSession) {
+  useEffect(() => {
+    const loadResponses = async () => {
+      if (session) {
+        setIsLoading(true);
+        console.log("Successfully fetched info for session");
         const fetchedResponses = await fetchResponses();
         setResponses(fetchedResponses);
         console.log("Fetched a total of", fetchedResponses.length, "responses.");
 
-        // Load liked posts from localStorage
-        const storedLikes = JSON.parse(localStorage.getItem("likedPosts") || "{}");
-        setLikedPosts(storedLikes);
+        // Load liked posts from session data
+        const likedMapping = session.likedPosts.reduce((acc, item) => {
+          acc[item.postId] = true;
+          return acc;
+        }, {} as { [key: string]: boolean });
+        setLikedPosts(likedMapping);
 
         if (fetchedResponses.length > 0) {
           setTopPostId(
@@ -50,12 +61,11 @@ export default function Dashboard() {
             ).id
           );
         }
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    }; // loadSessionAndResponses()
-
-    loadSessionAndResponses();
-  }, []);
+    };
+    loadResponses();
+  }, [session]); // run when session changes
 
   useEffect(() => {
     if (session) {
@@ -68,7 +78,7 @@ export default function Dashboard() {
     if (!session) return;
 
     const response = responses[index];
-    const currentlyLiked = likedPosts[response.id];
+    const currentlyLiked = session.likedPosts.some((item) => item.postId === response.id);
 
     if (!currentlyLiked) {
       if (session.postsAvailable <= 0) return;
@@ -80,11 +90,11 @@ export default function Dashboard() {
         updated[index] = { ...response, likesPerPost: response.likesPerPost + 1 };
         return updated;
       });
-      setLikedPosts((prev) => {
-        const newLikes = { ...prev, [response.id]: true };
-        localStorage.setItem("likedPosts", JSON.stringify(newLikes));
-        return newLikes;
-      });
+      const userRef = doc(db, "users", session.userId);
+      const newLikedPosts = [...session.likedPosts, { postId: response.id }];
+      await setDoc(userRef, { likedPosts: newLikedPosts }, { merge: true });
+      setLikedPosts((prev) => ({ ...prev, [response.id]: true }));
+      session.likedPosts = newLikedPosts;
     } else {
       await updateLike(response.id, response.likesPerPost - 1);
       await updateLeftLikes(session.userId, session.postsAvailable + 1);
@@ -94,11 +104,11 @@ export default function Dashboard() {
         updated[index] = { ...response, likesPerPost: response.likesPerPost - 1 };
         return updated;
       });
-      setLikedPosts((prev) => {
-        const newLikes = { ...prev, [response.id]: false };
-        localStorage.setItem("likedPosts", JSON.stringify(newLikes));
-        return newLikes;
-      });
+      const userRef = doc(db, "users", session.userId);
+      const newLikedPosts = session.likedPosts.filter((item) => item.postId !== response.id);
+      await setDoc(userRef, { likedPosts: newLikedPosts }, { merge: true });
+      setLikedPosts((prev) => ({ ...prev, [response.id]: false }));
+      session.likedPosts = newLikedPosts;
     }
 
     setTopPostId(
@@ -106,8 +116,9 @@ export default function Dashboard() {
         prev.likesPerPost > current.likesPerPost ? prev : current
       ).id
     );
-  }; // handleLikes()
+  }; //handleLikes()
 
+  // Sorted responses: newest first (left to right)
   const sortedResponses = responses
     .filter(
       ({ response, fictitiousName }) =>
@@ -116,11 +127,12 @@ export default function Dashboard() {
     )
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
+  
   return (
     <div className="min-h-screen w-screen relative bg-gradient-to-b from-black to-gray-900 text-white">
       <div className="fixed inset-0 z-0 will-change-transform">
         <StarsBackground
-          starDensity={0.002}
+          starDensity={0.0008}
           allStarsTwinkle={true}
           twinkleProbability={1}
           minTwinkleSpeed={0.5}
@@ -130,15 +142,15 @@ export default function Dashboard() {
 
       <div className="relative z-10 min-h-screen overflow-y-auto">
         <div className="flex flex-col items-center p-6 max-w-7xl mx-auto">
-          <h1 className="text-5xl font-mono mt-12 mb-6 text-amber-300 drop-shadow-glow animate-none">
+          <h1 className="text-5xl mt-6 mb-5 text-amber-300 drop-shadow-glow animate-none">
             {title}
           </h1>
 
           {/* optional, navlink */}
-          {/*<NavigationLinks />*/}
+          <NavigationLinks />
 
           {session && (
-            <div className="mb-8 bg-gray-800 bg-opacity-50 p-4 rounded-lg border border-gray-700">
+            <div className="mb-10 bg-gray-800 bg-opacity-50 p-4 rounded-lg border border-gray-700">
               <p className="text-amber-200">
                 Welcome, <span className="font-semibold">{session.username}</span>! 
                 You have <span className="font-bold text-yellow-500">{session.postsAvailable}</span> likes remaining.
@@ -165,10 +177,11 @@ export default function Dashboard() {
                   isLiked={likedPosts[item.id] || false}
                 />
               ))}
+              {/* FIX LATER??*/}
             </div>
           ) : (
             <div className="flex justify-center items-center h-64">
-              <p className="text-xl text-gray-400">No responses found</p>
+              <p className="text-xl text-gray-300">No responses found 🙁</p>
             </div>
           )}
         </div>
@@ -176,4 +189,4 @@ export default function Dashboard() {
       </div>
     </div>
   );
-} // Dashboard()
+}// Dashboard()
