@@ -28,13 +28,11 @@ const useSession = () => {
 
         if (userSnap.exists()) {
             // firebase Route:
-            console.log("Existing user session found in Firestore.");
             const userData = userSnap.data() as UserSession;
             localStorage.setItem("userSession", JSON.stringify(userData));
             setSession(userData);
         } else {
             // new sesh loading...
-            console.log("No user session found, creating a new one...");
             const newUser: UserSession = {
             userId,
             username: fictitiousName || `guest-${Math.random().toString(36).substr(2, 6)}`,
@@ -66,7 +64,7 @@ const useSession = () => {
         console.log("Fetched session from Firestore.");
         const updatedSession = userSnap.data() as UserSession;
         setSession(updatedSession);
-        localStorage.setItem("userSession", JSON.stringify(updatedSession)); // Sync with Firestore
+        localStorage.setItem("userSession", JSON.stringify(updatedSession)); // Synced now
       } else {
         console.error("Session not found in Firestore, clearing localStorage.");
         localStorage.removeItem("userSession");

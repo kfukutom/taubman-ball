@@ -8,12 +8,11 @@ interface InputProps {
 
 const Input = ({ placeholder, inputValue, setInputValue }: InputProps) => {
   useEffect(() => {
-    // Ensures smooth transition effect
     setTimeout(() => {}, 100);
   }, [placeholder]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length <= 150) {
+    if (e.target.value.length <= 50) {
       setInputValue(e.target.value);
     }
   };
@@ -26,7 +25,7 @@ const Input = ({ placeholder, inputValue, setInputValue }: InputProps) => {
         placeholder={placeholder}
         value={inputValue}
         onChange={handleChange}
-        maxLength={150}
+        maxLength={50}
         
         className={`font-mono w-full px-4 py-2 text-sm sm:text-md bg-gray-800 text-white border 
                     ${inputValue.length >= 150 ? "border-red-500" : "border-gray-600"} 
@@ -36,10 +35,10 @@ const Input = ({ placeholder, inputValue, setInputValue }: InputProps) => {
       />
       <p
         className={`text-right text-xs mt-1 ${
-          inputValue.length >= 150 ? "text-red-500" : "text-gray-400"
+          inputValue.length >= 50 ? "text-red-500" : "text-gray-400"
         }`}
       >
-        {inputValue.length}/150
+        {inputValue.length}/50
       </p>
     </div>
   );
