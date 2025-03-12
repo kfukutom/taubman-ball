@@ -83,7 +83,7 @@ export default function About() {
             {descriptionEvent}
           </p>
           <p className="text-lg sm:text-xl text-gray-300 leading-relaxed mb-10">
-            - sincerely, the <span className="font-mono">e</span>board :)
+            xoxo, the <span className="font-mono">e</span>board :)
           </p>
           <hr className="border-gray-600 my-10" />
           {/* Animated testimonials: should go below */}
