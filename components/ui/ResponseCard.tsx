@@ -11,7 +11,8 @@ interface ResponseCardProps {
   isLiked: boolean;
 }
 
-const HEART_PATH = "M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z";
+const HEART_PATH =
+  "M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z";
 
 const ResponseCard: React.FC<ResponseCardProps> = ({
   item,
@@ -26,13 +27,31 @@ const ResponseCard: React.FC<ResponseCardProps> = ({
 
   useEffect(() => {
     if (isLiked) {
-      //setIsAnimating(null);
       setIsAnimating(true);
       setTimeout(() => setIsAnimating(false), 500);
     }
   }, [isLiked]);
 
-  // main:
+  const formattedTime = new Date(item.timestamp).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  // "Time ago" format
+  const getTimeAgo = (timestamp: string) => {
+    const now = new Date();
+    const postDate = new Date(timestamp);
+    const diffInSeconds = Math.floor((now.getTime() - postDate.getTime()) / 1000);
+
+    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+    if (diffInSeconds < 60) return rtf.format(-diffInSeconds, "second");
+    if (diffInSeconds < 3600) return rtf.format(-Math.floor(diffInSeconds / 60), "minute");
+    if (diffInSeconds < 86400) return rtf.format(-Math.floor(diffInSeconds / 3600), "hour");
+    return rtf.format(-Math.floor(diffInSeconds / 86400), "day");
+  };
+
   return (
     <div
       key={item.id}
@@ -114,13 +133,13 @@ const ResponseCard: React.FC<ResponseCardProps> = ({
           </span>
         </button>
         
-        {/*
-        <div className="text-xs text-slate-500 font-medium">
-          {formatMood()}
-        </div>*/}
+        {/* Display formatted time and time ago */}
+        <div className="flex flex-col text-xs text-slate-500 font-medium text-right">
+          <span className="text-slate-400">{getTimeAgo(item.timestamp)}</span>
+        </div>
       </div>
     </div>
   );
-}; // ResponseCard()
+};
 
 export default ResponseCard;
