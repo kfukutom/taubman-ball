@@ -2,15 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
+  apiKey: process.env.OPENAI_API_KEY || "",
 });
 
 export const config = {
   runtime: "nodejs",
-}; // configure a nodejs runtime
+};
 
 export async function POST(req: NextRequest) {
   try {
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error("Missing OPENAI_API_KEY");
+    }
+
     const { text } = await req.json();
 
     if (!text?.trim()) {
@@ -29,7 +33,7 @@ export async function POST(req: NextRequest) {
           content: `Describe this person's text: "${text}"`,
         },
       ],
-      max_tokens: 10, // Allow for a longer response
+      max_tokens: 10,
     });
 
     const sentiment = response.choices[0]?.message?.content?.trim() || "Neutral";
