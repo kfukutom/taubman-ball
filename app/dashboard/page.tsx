@@ -120,12 +120,12 @@ export default function Dashboard() {
 
   // Sorted responses: newest first (left to right)
   const sortedResponses = responses
-    .filter(
-      ({ response, fictitiousName }) =>
-        response.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        fictitiousName.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  .filter(
+    ({ response, fictitiousName }) =>
+      response.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      fictitiousName.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+  .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
   
   return (
