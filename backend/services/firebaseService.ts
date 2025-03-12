@@ -4,6 +4,7 @@ import { db } from "@/backend/firebase-config";
 
 // Let this file be in tact w/ dashboard/app.tsx + ui/ResponseCard.tsx
 export interface Response {
+  timestamp(timestamp: any): import("react").ReactNode;
   id: string;
   fictitiousName: string;
   response: string;
