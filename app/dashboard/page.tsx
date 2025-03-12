@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { fetchResponses, updateLike, Response, updateLeftLikes } from "@/backend/services/firebaseService";
 import useSession from "@/backend/api/initSession";
@@ -9,7 +9,6 @@ import { db } from "@/backend/firebase-config";
 // UI-Components
 import { StarsBackground } from "@/components/ui/stars-background";
 import Footer from "@/components/ui/Footer";
-import SearchBar from "@/components/ui/SearchBar";
 import NavigationLinks from "@/components/ui/NavigationLinks";
 import ResponseCard from "@/components/ui/ResponseCard";
 import topPostImage from "@/assets/fire_local.png";
@@ -28,6 +27,7 @@ export default function Dashboard() {
   const [topPostId, setTopPostId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [likedPosts, setLikedPosts] = useState<{ [key: string]: boolean }>({});
+  const [showStars, setShowStars] = useState(false);
 
   useEffect(() => {
     const loadSession = async () => {
@@ -36,6 +36,10 @@ export default function Dashboard() {
       setIsLoading(false);
     };
     loadSession();
+    
+    // Defer stars loading
+    const timer = setTimeout(() => setShowStars(true), 100);
+    return () => clearTimeout(timer);
   }, []); // run once on mount
 
   useEffect(() => {
@@ -74,7 +78,7 @@ export default function Dashboard() {
     }
   }, [session]);
 
-  const handleLike = async (index: number) => {
+  const handleLike = useCallback(async (index: number) => {
     if (!session) return;
 
     const response = responses[index];
@@ -82,32 +86,39 @@ export default function Dashboard() {
 
     if (!currentlyLiked) {
       if (session.postsAvailable <= 0) return;
-      await updateLike(response.id, response.likesPerPost + 1);
-      await updateLeftLikes(session.userId, session.postsAvailable - 1);
-      session.postsAvailable--;
+      
+      // Optimistic UI update
       setResponses((prev) => {
         const updated = [...prev];
         updated[index] = { ...response, likesPerPost: response.likesPerPost + 1 };
         return updated;
       });
+      setLikedPosts((prev) => ({ ...prev, [response.id]: true }));
+      
+      await updateLike(response.id, response.likesPerPost + 1);
+      await updateLeftLikes(session.userId, session.postsAvailable - 1);
+      session.postsAvailable--;
+      
       const userRef = doc(db, "users", session.userId);
       const newLikedPosts = [...session.likedPosts, { postId: response.id }];
       await setDoc(userRef, { likedPosts: newLikedPosts }, { merge: true });
-      setLikedPosts((prev) => ({ ...prev, [response.id]: true }));
       session.likedPosts = newLikedPosts;
     } else {
-      await updateLike(response.id, response.likesPerPost - 1);
-      await updateLeftLikes(session.userId, session.postsAvailable + 1);
-      session.postsAvailable++;
+      // Optimistic UI update
       setResponses((prev) => {
         const updated = [...prev];
         updated[index] = { ...response, likesPerPost: response.likesPerPost - 1 };
         return updated;
       });
+      setLikedPosts((prev) => ({ ...prev, [response.id]: false }));
+      
+      await updateLike(response.id, response.likesPerPost - 1);
+      await updateLeftLikes(session.userId, session.postsAvailable + 1);
+      session.postsAvailable++;
+      
       const userRef = doc(db, "users", session.userId);
       const newLikedPosts = session.likedPosts.filter((item) => item.postId !== response.id);
       await setDoc(userRef, { likedPosts: newLikedPosts }, { merge: true });
-      setLikedPosts((prev) => ({ ...prev, [response.id]: false }));
       session.likedPosts = newLikedPosts;
     }
 
@@ -116,33 +127,35 @@ export default function Dashboard() {
         prev.likesPerPost > current.likesPerPost ? prev : current
       ).id
     );
-  }; //handleLikes()
+  }, [responses, session]); //handleLikes()
 
   // Sorted responses: newest first (left to right)
-  const sortedResponses = responses
-  .filter(
-    ({ response, fictitiousName }) =>
-      response.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      fictitiousName.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-  .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-
+  const sortedResponses = useMemo(() => responses
+    .filter(
+      ({ response, fictitiousName }) =>
+        response.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        fictitiousName.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()), 
+    [responses, searchQuery]);
   
   return (
     <div className="min-h-screen w-screen relative bg-gradient-to-b from-black to-gray-900 text-white">
-      <div className="fixed inset-0 z-0 will-change-transform">
-        <StarsBackground
-          starDensity={0.0008}
-          allStarsTwinkle={true}
-          twinkleProbability={1}
-          minTwinkleSpeed={0.5}
-          maxTwinkleSpeed={0.8}
-        />
-      </div>
+      {showStars && (
+        <div className="fixed inset-0 z-0 will-change-transform">
+          <StarsBackground
+            starDensity={0.0005}
+            allStarsTwinkle={false}
+            twinkleProbability={0.7}
+            minTwinkleSpeed={0.3}
+            maxTwinkleSpeed={0.6}
+          />
+        </div>
+      )}
 
       <div className="relative z-10 min-h-screen overflow-y-auto">
-        <div className="flex flex-col items-center p-6 max-w-7xl mx-auto">
-          <h1 className="text-5xl mt-6 mb-5 text-amber-300 drop-shadow-glow animate-none">
+        <div className="flex flex-col items-center p-4 sm:p-6 max-w-7xl mx-auto">
+          <h1 className="text-3xl sm:text-5xl mt-4 sm:mt-6 mb-3 sm:mb-5 text-amber-300 drop-shadow-glow animate-none">
             {title}
           </h1>
 
@@ -150,8 +163,8 @@ export default function Dashboard() {
           <NavigationLinks />
 
           {session && (
-            <div className="mb-10 bg-gray-800 bg-opacity-50 p-4 rounded-lg border border-gray-700">
-              <p className="text-amber-200">
+            <div className="mb-6 sm:mb-10 bg-gray-800 bg-opacity-50 p-3 sm:p-4 rounded-lg border border-gray-700 w-full max-w-sm">
+              <p className="text-sm sm:text-base text-amber-200">
                 Welcome, <span className="font-semibold">{session.username}</span>! 
                 You have <span className="font-bold text-yellow-500">{session.postsAvailable}</span> likes remaining.
               </p>
@@ -161,11 +174,11 @@ export default function Dashboard() {
           {/*<SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />*/}
 
           {isLoading ? (
-            <div className="flex justify-center items-center h-64">
-              <HashLoader color="#FFEE58" loading={isLoading} size={80} />
+            <div className="flex justify-center items-center h-32 sm:h-64">
+              <HashLoader color="#FFEE58" loading={isLoading} size={50} />
             </div>
           ) : sortedResponses.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl pb-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 w-full max-w-6xl pb-8 sm:pb-16">
               {sortedResponses.map((item) => (
                 <ResponseCard
                   key={item.id}
@@ -180,8 +193,8 @@ export default function Dashboard() {
               {/* FIX LATER??*/}
             </div>
           ) : (
-            <div className="flex justify-center items-center h-64">
-              <p className="text-xl text-gray-300">No responses found! 💀</p>
+            <div className="flex justify-center items-center h-32 sm:h-64">
+              <p className="text-lg sm:text-xl text-gray-300">No responses found! 💀</p>
             </div>
           )}
         </div>
