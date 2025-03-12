@@ -181,7 +181,7 @@ export default function Dashboard() {
             </div>
           ) : (
             <div className="flex justify-center items-center h-64">
-              <p className="text-xl text-gray-300">No responses found 🙁</p>
+              <p className="text-xl text-gray-300">No responses found! 💀</p>
             </div>
           )}
         </div>
