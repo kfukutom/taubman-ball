@@ -166,7 +166,7 @@ export default function Dashboard() {
             <div className="mb-6 sm:mb-10 bg-gray-800 bg-opacity-50 p-3 sm:p-4 rounded-lg border border-gray-700 w-full max-w-sm">
               <p className="text-sm sm:text-base text-amber-200">
                 Welcome, <span className="font-semibold">{session.username}</span>! 
-                You have <span className="font-bold text-yellow-500">{session.postsAvailable}</span> likes remaining.
+                You are to like <span className="font-bold text-yellow-500 ">3</span> posts that <span className="font-bold text-yellow-500 ">YOU</span> absolutely love!
               </p>
             </div>
           )}
