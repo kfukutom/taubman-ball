@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image, { StaticImageData } from "next/image";
 import { Response } from "@/backend/services/firebaseService";
 
@@ -8,51 +8,135 @@ interface ResponseCardProps {
   handleLike: (index: number) => void;
   topPostId: string | null;
   topPostImage: StaticImageData;
+  isLiked: boolean;
 }
 
-const ResponseCard: React.FC<ResponseCardProps> = ({ item, index, handleLike, topPostId, topPostImage }) => {
+const HEART_PATH =
+  "M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z";
+
+const ResponseCard: React.FC<ResponseCardProps> = ({
+  item,
+  index,
+  handleLike,
+  topPostId,
+  topPostImage,
+  isLiked,
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (isLiked) {
+      setIsAnimating(true);
+      setTimeout(() => setIsAnimating(false), 500);
+    }
+  }, [isLiked]);
+
+  const formattedTime = new Date(item.timestamp).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  // "Time ago" format
+  const getTimeAgo = (timestamp: string) => {
+    const now = new Date();
+    const postDate = new Date(timestamp);
+    const diffInSeconds = Math.floor((now.getTime() - postDate.getTime()) / 1000);
+
+    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+    if (diffInSeconds < 60) return rtf.format(-diffInSeconds, "second");
+    if (diffInSeconds < 3600) return rtf.format(-Math.floor(diffInSeconds / 60), "minute");
+    if (diffInSeconds < 86400) return rtf.format(-Math.floor(diffInSeconds / 3600), "hour");
+    return rtf.format(-Math.floor(diffInSeconds / 86400), "day");
+  };
+
   return (
     <div
       key={item.id}
-      className="relative w-[350px] max-w-full rounded-2xl border 
-                border-slate-700 px-4 py-4 sm:px-8 sm:py-6 md:w-[450px] 
-                transition-transform duration-300 hover:-translate-y-2 shadow-lg hover:shadow-white/10"
-      style={{ background: "linear-gradient(180deg, #1E1E1E, #121212)" }}
+      className="relative w-[350px] max-w-full rounded-xl border 
+                border-slate-700/40 px-5 py-6 sm:px-7 sm:py-6 md:w-[450px] 
+                transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-xl
+                bg-gradient-to-b from-slate-800 to-slate-900 backdrop-blur-sm
+                hover:border-slate-600/60 group"
     >
       {item.id === topPostId && (
-        <div className="absolute top-[-10px] right-[-10px] flex items-center gap-2 bg-yellow-400/90 text-black font-bold px-3 py-1 rounded-full shadow-lg transform rotate-[10deg] hover:rotate-[5deg] transition-transform duration-300">
+        <div className="absolute top-[-12px] right-[-8px] flex items-center gap-1 
+                      bg-gradient-to-r from-amber-400 to-amber-500 text-slate-900 
+                      font-semibold px-3 py-1 rounded-full shadow-lg transform 
+                      rotate-[5deg] hover:rotate-[2deg] transition-all duration-300
+                      hover:scale-105 border border-amber-300/20">
           <Image
             src={topPostImage}
-            alt="Top Post"
-            width={20}
-            height={20}
-            className="drop-shadow-md animate-pulse"
+            alt="Featured"
+            width={18}
+            height={18}
+            className="drop-shadow-md"
           />
-          <p className="text-xs font-mono tracking-wide">TOP POST 😲</p>
+          <p className="text-xs font-bold tracking-wide">TOP COMMENT</p>
         </div>
       )}
 
-      <blockquote>
-        <span className="relative z-20 text-sm leading-[1.6] text-gray-100 font-normal">{item.response}</span>
-        <div className="relative z-20 mt-2 flex flex-row items-center">
-          <span className="text-sm leading-[1.6] text-gray-400 font-normal">@{item.fictitiousName}</span>
+      <blockquote className="relative">
+        <div className="absolute -top-4 -left-2 text-slate-600 opacity-30 text-4xl">"</div>
+        <p className="relative z-20 text-sm leading-[1.7] text-slate-100 font-normal 
+                    mb-3 group-hover:text-white transition-colors duration-300">
+          {item.response}
+        </p>
+        <div className="relative z-20 mt-4 flex flex-row items-center">
+          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 
+                        flex items-center justify-center text-white font-medium mr-3">
+            {item.fictitiousName.charAt(0).toUpperCase()}
+          </div>
+          <span className="text-sm leading-[1.6] text-slate-300 font-medium">
+            @{item.fictitiousName}
+          </span>
         </div>
       </blockquote>
 
-      <div className="flex items-center mt-3">
+      <div className="flex items-center mt-5 pt-3 border-t border-slate-700/30 justify-between">
         <button
           onClick={() => handleLike(index)}
-          className="flex items-center space-x-2 transition-colors duration-200 text-gray-300 hover:text-red-400"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className="flex items-center space-x-2 transition-all duration-200 p-2 rounded-lg 
+                  hover:bg-slate-800/80 active:bg-slate-700/50"
+          aria-label={isLiked ? "Unlike" : "Like"}
         >
-          <svg className="w-3.5 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <svg
+            className={`w-5 h-5 transition-transform duration-300 ${
+              isAnimating ? "scale-125" : "scale-100"
+            }`}
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            style={{
+              color: isLiked
+                ? "#F56565"
+                : isHovered
+                ? "#FC8181"
+                : "#A0AEC0",
+            }}
+          >
             <path
               fillRule="evenodd"
-              d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+              d={HEART_PATH}
               clipRule="evenodd"
             />
           </svg>
-          <span className="text-s">{item.likesPerPost || 0}</span>
+          <span
+            className={`text-sm font-medium transition-all duration-300 ${
+              isAnimating ? "scale-110" : "scale-100"
+            } ${isLiked ? "text-red-400" : "text-slate-300"}`}
+          >
+            {item.likesPerPost || 0}
+          </span>
         </button>
+        
+        {/* Display formatted time and time ago */}
+        <div className="flex flex-col text-xs text-slate-500 font-medium text-right">
+          <span className="text-slate-400">{getTimeAgo(item.timestamp)}</span>
+        </div>
       </div>
     </div>
   );

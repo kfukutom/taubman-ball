@@ -1,8 +1,10 @@
+// firebaseService.tsx -> fetchResponses() + updateLike()
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "@/backend/firebase-config";
 
 // Let this file be in tact w/ dashboard/app.tsx + ui/ResponseCard.tsx
 export interface Response {
+  timestamp(timestamp: any): import("react").ReactNode;
   id: string;
   fictitiousName: string;
   response: string;
@@ -31,3 +33,13 @@ export const updateLike = async (responseId: string, newLikeCount: number) => {
     console.error("Error updating likes:", error);
   }
 }; // updateLike() <-- query
+
+export const updateLeftLikes = async (userId: string, newCount: number) => {
+  try {
+    await updateDoc(doc(db, "users", userId), {
+      postsAvailable: newCount,
+    });
+  } catch (error) {
+    console.error("Error updating likes:", error);
+  }
+}; // updateLeftLikes()

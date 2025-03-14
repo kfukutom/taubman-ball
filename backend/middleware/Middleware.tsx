@@ -1,3 +1,4 @@
+// middleWare.tsx -> generateID() + middleware()
 import { NextRequest, NextResponse } from "next/server";
 import { getDatabase, ref, get, set } from "firebase/database";
 import { app } from "@/backend/firebase-config";
