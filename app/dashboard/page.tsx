@@ -28,6 +28,7 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [likedPosts, setLikedPosts] = useState<{ [key: string]: boolean }>({});
   const [showStars, setShowStars] = useState(false);
+  const [sortOption, setSortOption] = useState("recency");
 
   useEffect(() => {
     const loadSession = async () => {
@@ -130,14 +131,16 @@ export default function Dashboard() {
   }, [responses, session]); //handleLikes()
 
   // Sorted responses: newest first (left to right)
-  const sortedResponses = useMemo(() => responses
-    .filter(
+  const sortedResponses = useMemo(() => {
+    const filtered = responses.filter(
       ({ response, fictitiousName }) =>
         response.toLowerCase().includes(searchQuery.toLowerCase()) ||
         fictitiousName.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()), 
-    [responses, searchQuery]);
+    );
+    return sortOption === "likecount"
+      ? filtered.sort((a, b) => b.likesPerPost - a.likesPerPost)
+      : filtered.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  }, [responses, searchQuery,sortOption]);
   
   return (
     <div className="min-h-screen w-screen relative bg-gradient-to-b from-black to-gray-900 text-white">
@@ -163,13 +166,18 @@ export default function Dashboard() {
           <NavigationLinks />
 
           {session && (
-            <div className="mb-6 sm:mb-10 bg-gray-800 bg-opacity-50 p-3 sm:p-4 rounded-lg border border-gray-700 w-full max-w-sm">
+            <div className="mb-6 sm:mb-6 bg-gray-800 bg-opacity-50 p-3 sm:p-4 rounded-lg border border-gray-700 w-full max-w-sm">
               <p className="text-sm sm:text-base text-amber-200">
                 Welcome, <span className="font-semibold">{session.username}</span>! 
                 You are to like <span className="font-bold text-yellow-500 ">3</span> posts that <span className="font-bold text-yellow-500 ">YOU</span> absolutely love!
               </p>
             </div>
           )}
+
+          <select value={sortOption} onChange={(e) => setSortOption(e.target.value)} className="mb-6 w-full max-w-sm p-2 rounded-md bg-gray-800 border border-gray-700 text-white">
+            <option value="recency">Sort by Recency</option>
+            <option value="likecount">Sort by Like Count</option>
+          </select>
 
           {/*<SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />*/}
 
