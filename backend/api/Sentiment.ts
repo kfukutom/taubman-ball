@@ -16,7 +16,7 @@ const runSentiment = async (text: string): Promise<string> => {
       return data.sentiment;
     } catch (error) {
       console.error("Sentiment analysis failed:", error);
-      return "Neutral";
+      return "0.5";
     }
   }; // runSentiment()
   

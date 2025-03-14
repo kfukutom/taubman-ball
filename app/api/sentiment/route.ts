@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     const { text } = await req.json();
 
     if (!text?.trim()) {
-      return NextResponse.json({ sentiment: "Neutral" });
+      return NextResponse.json({sentiment: "0.5"});
     }
 
     const response = await openai.chat.completions.create({
