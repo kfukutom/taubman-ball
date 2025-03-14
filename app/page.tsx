@@ -29,6 +29,7 @@ export default function Home() {
   const [currentTime, setCurrentTime] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [showNamePrompt, setShowNamePrompt] = useState(false);
+  const [hyperLink, setHyperLink] = useState(false);
   const [fictitiousName, setFictitiousName] = useState("");
   const router = useRouter();
   const modalRef = useRef<HTMLDivElement>(null);
@@ -82,11 +83,24 @@ export default function Home() {
       }, 50);
       return () => clearTimeout(timer);
     }
-  }, [showNamePrompt]);
+    if (hyperLink) {
+      const timer = setTimeout(() => {
+        const modal = document.querySelector('.scale-95');
+        if (modal) {
+          modal.classList.remove('scale-95', 'opacity-0', 'translate-y-4');
+          modal.classList.add('scale-100', 'opacity-100', 'translate-y-0');
+        }
+      }, 50);
+    }
+  }, [showNamePrompt, hyperLink]);
 
   const handleShipResponse = () => {
     setShowNamePrompt(true);
   };
+
+  const showHyperlink = () => {
+    setHyperLink(true);
+  }
 
   const handleSubmitName = async () => {
     setLoading(true);
@@ -115,6 +129,7 @@ export default function Home() {
   const handleOutsideClick = (e: HandleOutsideClickEvent) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
       setShowNamePrompt(false);
+      setHyperLink(false);
     }
   };
 
@@ -158,11 +173,16 @@ export default function Home() {
               Taubman <span className="font-semibold text-amber-300">Architecture</span> Ball!
             </span>
           </h2>
+          <p className="text-sm text-gray-200 italic">
+            Reminder: Your responses will be displayed on the wall.
+            <span className="block text-gray-400">Absolutely no hate speech or blatant profanity.</span>
+          </p>
           <label className="text-md sm:text-lg text-gray-300 mt-5 
           bg-gray-800 p-3 rounded-md hover:scale-105 transform transition duration-200">
-            <span className="text-amber-300">Prompt,</span> How do you define the future of architecture?
+            <span className="text-amber-300">Prompt,</span> How will the future remember us?
           </label>
           <Input placeholder={placeholder} inputValue={inputValue} setInputValue={setInputValue} />
+
           <button
             onClick={handleShipResponse}
             className="px-4 py-2 rounded-md border border-neutral-700 bg-neutral-800 text-neutral-300 text-sm hover:bg-neutral-600 
@@ -171,6 +191,7 @@ export default function Home() {
             Ship My Response 🚀
             {/* <span className="text-2xl ml-2">🚀</span> */}
           </button>
+          <a className="underline text-blue-400 cursor-pointer" onClick={showHyperlink}>How will my response be used?</a>
         </div>
       </section>
 
@@ -179,7 +200,7 @@ export default function Home() {
         className="fixed inset-0 bg-black bg-opacity-60 transition-opacity duration-300 ease-in-out flex 
         items-center justify-center z-30 backdrop-filter backdrop-blur-sm"
         onClick={handleOutsideClick}
-      >
+        >
         <div
           ref={modalRef}
           className="relative bg-gradient-to-br from-gray-800 to-gray-900 text-white p-8 rounded-2xl shadow-2xl border border-gray-700 w-96 text-center transform transition-all duration-300 ease-in-out scale-95 opacity-0 translate-y-4"
@@ -215,7 +236,23 @@ export default function Home() {
           <HashLoader color="#FFEE58" loading={loading} size={50} />
         </div>
       )}
+      {hyperLink && (
+        <div
+        className="fixed inset-0 bg-black bg-opacity-60 transition-opacity duration-300 ease-in-out flex 
+        items-center justify-center z-30 backdrop-filter backdrop-blur-sm"
+        onClick={handleOutsideClick}
+        >
+        <div
+          ref={modalRef}
+          className="relative bg-gradient-to-br from-gray-800 to-gray-900 text-white p-8 rounded-2xl shadow-2xl border border-gray-700 w-96 text-center transform transition-all duration-300 ease-in-out scale-95 opacity-0 translate-y-4"
+        >
+          <button onClick={() => setHyperLink(false)} className="absolute top-2 right-2 text-white">X</button>
+          <p className="text-sm pb-0 text-gray-400">
+          Your response will be added to a central database for other users to read, and like if they feel inclined. The responses will be polled, and displayed on a rolling basis on the southwest wall of the commons staircase. Responses will be evaluated by ChatGPT, and awarded a sentiment score based on how optimistic or pessimistic the response is interpreted to be. This sentiment score will affect the color of the visualization when your response is displayed. Your sentiment score will also affect the group average sentiment, which will also be displayed.
+          </p>
+        </div>
+      </div>
+      )}
     </div>
-
   );
 }
