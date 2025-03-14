@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       messages: [
         {
           role: "system",
-          content: "You are a text analysis model. Analyze the MOOD of the following text and respond with one unique word.",
+          content: "You are a text analysis model. Analyze the mood of the following text and respond with a decimal number between 0 and 1. A 0 would represent the most optimistic response, and a 1 would represent the most pessimistic. A 0.5 would be neutral.",
         },
         {
           role: "user",
