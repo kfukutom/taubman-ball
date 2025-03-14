@@ -28,9 +28,9 @@ const Input = ({ placeholder, inputValue, setInputValue }: InputProps) => {
         maxLength={100}
         
         className={`font-mono w-full px-4 py-2 text-sm sm:text-md bg-gray-800 text-white border 
-                    ${inputValue.length >= 50 ? "border-red-500" : "border-gray-600"} 
+                    ${inputValue.length >= 100 ? "border-red-500" : "border-gray-600"} 
                     rounded-lg focus:outline-none focus:ring-2 
-                    ${inputValue.length >= 50 ? "focus:ring-red-500" : "focus:ring-blue-500"} 
+                    ${inputValue.length >= 100 ? "focus:ring-red-500" : "focus:ring-blue-500"} 
                     transition-opacity duration-500 ease-in-out`}
       />
       <p
