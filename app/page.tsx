@@ -25,7 +25,7 @@ import { HashLoader } from 'react-spinners';
 import Footer from "@/components/ui/Footer";
 
 export default function Home() {
-  const [placeholder, setPlaceholder] = useState("Send away!");
+  const [placeholder, setPlaceholder] = useState("As innovators and destroyers.");
   const [currentTime, setCurrentTime] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [showNamePrompt, setShowNamePrompt] = useState(false);
@@ -39,16 +39,13 @@ export default function Home() {
 
   const { session, initializeSession, clearSession } = useSession();
 
+  // i think these will work.
   const responseList = [
-    "Send away!",
-    "Finalizing...",
-    "I'm here for free food!",
-    "I'm here for the vibes!",
-    "Excited for the installations!",
-    "Love our built environment ❤️ ",
-    "Just trying to get by!",
+    "As the architects of the digital age.",
+    "Those who lost touch with others",
+    "Those that valued convenience over sustainability.",
+    "We built a global village of connections!",
   ];
-
   useEffect(() => {
     const interval = setInterval(() => {
       setPlaceholder((prev) => {
@@ -174,7 +171,7 @@ export default function Home() {
             </span>
           </h2>
           <p className="text-sm text-gray-200 italic">
-            Reminder: Your responses will be displayed on the wall.
+            Reminder: Your responses will be displayed on the wall, each user limited to ONE response.
             <span className="block text-gray-400">Absolutely no hate speech or blatant profanity.</span>
           </p>
           <label className="text-md sm:text-lg text-gray-300 mt-5 

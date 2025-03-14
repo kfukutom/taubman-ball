@@ -29,6 +29,7 @@ export default function Dashboard() {
   const [likedPosts, setLikedPosts] = useState<{ [key: string]: boolean }>({});
   const [showStars, setShowStars] = useState(false);
   const [sortOption, setSortOption] = useState("recency");
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     const loadSession = async () => {
@@ -38,10 +39,16 @@ export default function Dashboard() {
     };
     loadSession();
     
-    // Defer stars loading
     const timer = setTimeout(() => setShowStars(true), 100);
+    
+    // Check if popup has been shown before
+    const popupShown = localStorage.getItem('popupShown');
+    if (!popupShown) {
+      setShowPopup(true);
+    }
+    
     return () => clearTimeout(timer);
-  }, []); // run once on mount
+  }, []);
 
   useEffect(() => {
     const loadResponses = async () => {
@@ -52,7 +59,6 @@ export default function Dashboard() {
         setResponses(fetchedResponses);
         console.log("Fetched a total of", fetchedResponses.length, "responses.");
 
-        // Load liked posts from session data
         const likedMapping = session.likedPosts.reduce((acc, item) => {
           acc[item.postId] = true;
           return acc;
@@ -70,7 +76,7 @@ export default function Dashboard() {
       }
     };
     loadResponses();
-  }, [session]); // run when session changes
+  }, [session]);
 
   useEffect(() => {
     if (session) {
@@ -88,7 +94,6 @@ export default function Dashboard() {
     if (!currentlyLiked) {
       if (session.postsAvailable <= 0) return;
       
-      // Optimistic UI update
       setResponses((prev) => {
         const updated = [...prev];
         updated[index] = { ...response, likesPerPost: response.likesPerPost + 1 };
@@ -105,7 +110,6 @@ export default function Dashboard() {
       await setDoc(userRef, { likedPosts: newLikedPosts }, { merge: true });
       session.likedPosts = newLikedPosts;
     } else {
-      // Optimistic UI update
       setResponses((prev) => {
         const updated = [...prev];
         updated[index] = { ...response, likesPerPost: response.likesPerPost - 1 };
@@ -128,9 +132,8 @@ export default function Dashboard() {
         prev.likesPerPost > current.likesPerPost ? prev : current
       ).id
     );
-  }, [responses, session]); //handleLikes()
+  }, [responses, session]);
 
-  // Sorted responses: newest first (left to right)
   const sortedResponses = useMemo(() => {
     const filtered = responses.filter(
       ({ response, fictitiousName }) =>
@@ -140,10 +143,36 @@ export default function Dashboard() {
     return sortOption === "likecount"
       ? filtered.sort((a, b) => b.likesPerPost - a.likesPerPost)
       : filtered.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-  }, [responses, searchQuery,sortOption]);
+  }, [responses, searchQuery, sortOption]);
+  
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    localStorage.setItem('popupShown', 'true');
+  };
   
   return (
     <div className="min-h-screen w-screen relative bg-gradient-to-b from-black to-gray-900 text-white">
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50 backdrop-blur-sm">
+          <div className="bg-gray-900 border border-amber-300/30 p-8 rounded-lg shadow-lg max-w-lg text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-b from-gray-800 to-gray-900 opacity-70 z-0"></div>
+            <div className="relative z-10">
+              <h2 className="text-2xl mb-6 text-amber-300 font-semibold">How Responses Are Evaluated</h2>
+              <p className="mb-6 text-gray-200 leading-relaxed">
+                Your response will be evaluated by...
+              </p>
+              <button 
+                onClick={handleClosePopup} 
+                className="px-6 py-2 bg-amber-300 hover:bg-amber-400 text-black font-medium rounded-md transition-colors duration-200 shadow-md"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
       {showStars && (
         <div className="fixed inset-0 z-0 will-change-transform">
           <StarsBackground
@@ -173,13 +202,10 @@ export default function Dashboard() {
               </p>
             </div>
           )}
-
           <select value={sortOption} onChange={(e) => setSortOption(e.target.value)} className="mb-6 w-full max-w-sm p-2 rounded-md bg-gray-800 border border-gray-700 text-white">
             <option value="recency">Sort by Recency</option>
             <option value="likecount">Sort by Like Count</option>
           </select>
-
-          {/*<SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />*/}
 
           {isLoading ? (
             <div className="flex justify-center items-center h-32 sm:h-64">
@@ -198,7 +224,6 @@ export default function Dashboard() {
                   isLiked={likedPosts[item.id] || false}
                 />
               ))}
-              {/* FIX LATER??*/}
             </div>
           ) : (
             <div className="flex justify-center items-center h-32 sm:h-64">
@@ -210,4 +235,4 @@ export default function Dashboard() {
       </div>
     </div>
   );
-}// Dashboard()
+}
