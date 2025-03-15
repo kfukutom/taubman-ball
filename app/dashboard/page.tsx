@@ -157,9 +157,16 @@ export default function Dashboard() {
           <div className="bg-gray-900 border border-amber-300/30 p-8 rounded-lg shadow-lg max-w-lg text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-gray-800 to-gray-900 opacity-70 z-0"></div>
             <div className="relative z-10">
-              <h2 className="text-2xl mb-6 text-amber-300 font-semibold">How Responses Are Evaluated</h2>
+              <h2 className="text-2xl mb-6 text-amber-300 font-semibold">
+                What’s Happening on the Wall?
+              </h2>
               <p className="mb-6 text-gray-200 leading-relaxed">
-                Your response will be evaluated by...
+                The living visualization on the staircase reflects both individual responses and the group's overall sentiment toward the prompt.  
+                <br /><br />
+                - The orb’s color changes based on sentiment: green for optimism and red for pessimism.  
+                - Individual and group sentiment scores are shown numerically on the wall.  
+                - The sprites inside the orb represent total responses — one sprite equals 10 responses.  
+                - The sprites dance to the room's music and will grow as more people respond throughout the night.  
               </p>
               <button 
                 onClick={handleClosePopup} 
@@ -171,8 +178,6 @@ export default function Dashboard() {
           </div>
         </div>
       )}
-
-
       {showStars && (
         <div className="fixed inset-0 z-0 will-change-transform">
           <StarsBackground
