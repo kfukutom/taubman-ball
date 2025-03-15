@@ -41,11 +41,8 @@ export default function Dashboard() {
     
     const timer = setTimeout(() => setShowStars(true), 100);
     
-    // Check if popup has been shown before
-    const popupShown = localStorage.getItem('popupShown');
-    if (!popupShown) {
-      setShowPopup(true);
-    }
+    // Always show popup on refresh
+    setShowPopup(true);
     
     return () => clearTimeout(timer);
   }, []);
@@ -147,7 +144,6 @@ export default function Dashboard() {
   
   const handleClosePopup = () => {
     setShowPopup(false);
-    localStorage.setItem('popupShown', 'true');
   };
   
   return (
@@ -163,10 +159,10 @@ export default function Dashboard() {
               <p className="mb-6 text-gray-200 leading-relaxed">
                 The living visualization on the staircase reflects both individual responses and the group's overall sentiment toward the prompt.  
                 <br /><br />
-                - The orb’s color changes based on sentiment: green for optimism and red for pessimism.  
-                - Individual and group sentiment scores are shown numerically on the wall.  
-                - The sprites inside the orb represent total responses — one sprite equals 10 responses.  
-                - The sprites dance to the room's music and will grow as more people respond throughout the night.  
+                The orb’s color changes based on sentiment: green for optimism and red for pessimism.  
+                Individual and group sentiment scores are shown numerically on the wall.  
+                The sprites inside the orb represent total responses — one sprite equals 10 responses.  
+                The sprites dance to the room's music and will grow as more people respond throughout the night.  
               </p>
               <button 
                 onClick={handleClosePopup} 
