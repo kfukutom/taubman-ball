@@ -15,6 +15,7 @@ import moon from "@/assets/moon.png"; // add?
 // Animated Modals;
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonial";
 import Footer from "@/components/ui/Footer";
+import NavigationLinks from "@/components/ui/NavigationLinks";
 
 // Background components:
 import { StarsBackground } from "@/components/ui/stars-background";
@@ -45,7 +46,7 @@ export default function About() {
   return (
     <div className="min-h-screen w-screen relative bg-gradient-to-b from-black to-gray-900 text-white overflow-hidden">
       <StarsBackground 
-        className="absolute inset-0 z-0" 
+        className="absolute inset-0 z-0 pointer-events-none" 
         starDensity={0.001} 
         allStarsTwinkle={false} 
         twinkleProbability={1} 
@@ -53,7 +54,7 @@ export default function About() {
         maxTwinkleSpeed={0.8} 
       />
       <ShootingStars 
-        className="absolute inset-0 z-0" 
+        className="absolute inset-0 z-0 pointer-events-none" 
         minSpeed={5} 
         maxSpeed={30} 
         minDelay={3000} 
@@ -76,6 +77,7 @@ export default function About() {
           <h1 className="text-5xl font-mono mt-12 mb-6 text-amber-300 drop-shadow-glow animate-none">
             About <span className="text-white drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]">TAB</span>
           </h1>
+  
           <p className="text-sm sm:text-base text-gray-400 leading-relaxed pb-3">
             2000 Boinsteel Blvd, 7:00pm - 10:00pm
           </p>
@@ -123,7 +125,7 @@ export default function About() {
                 src: event3.src,
               },
               {
-                quote: "The Ball is a tradition that keeps the Taubman community inspired, and is one that students plan to continue in the years to come. Read more about last year's event here: https://shorturl.at/9A2AP",
+                quote: "The Ball is a tradition that keeps the Taubman community inspired, and is one that students plan to continue in the years to come. More about our past event can be read down below under `Past Event`",
                 name: "",
                 designation: "Future Events",
                 src: event.src,

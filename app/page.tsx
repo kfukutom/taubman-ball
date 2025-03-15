@@ -171,12 +171,12 @@ export default function Home() {
             </span>
           </h2>
           <p className="text-sm text-gray-200 italic">
-            Reminder: Your responses will be displayed on the wall, each user limited to ONE response.
+            Reminder: Your responses will be displayed on the wall, each user will be limited to ONE response.
             <span className="block text-gray-400">Absolutely no hate speech or blatant profanity.</span>
           </p>
           <label className="text-md sm:text-lg text-gray-300 mt-5 
           bg-gray-800 p-3 rounded-md hover:scale-105 transform transition duration-200">
-            <span className="text-amber-300">Prompt,</span> How will the future remember us?
+            <span className="text-amber-300">Prompt:</span> How will the future remember us?
           </label>
           <Input placeholder={placeholder} inputValue={inputValue} setInputValue={setInputValue} />
 
