@@ -34,5 +34,6 @@ This program aims to create an interactive digital environment for Taubman Colle
 - Fast path searching for optimized event navigation  
 - Filtering and querying of user responses  
 - Modern UI built with an AceternityUI / ShadcnUI framework (Credits)
+- Bag of Word + Term frequency-inverse document frequency model for text importance
 
 Thanks for checking out our code base 💯
