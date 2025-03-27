@@ -2,7 +2,7 @@
 
 - Jack (Product, Sentiment Visual)
 - Swasti (Design Research, User Experience)
-- Ken Fukutomi (Platform, Software)
+- Ken (Platform, Software)
 
 ---
 
