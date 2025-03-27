@@ -1,8 +1,8 @@
 ## Team
 
-- **Jack B.** (Product, Sentiment Visual)
-- **Swasti** (Design Research)
-- **Ken Fukutomi** (Platform, Software)
+- Jack (Product, Sentiment Visual)
+- Swasti (Design Research, User Experience)
+- Ken Fukutomi (Platform, Software)
 
 ---
 
