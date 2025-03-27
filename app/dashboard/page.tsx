@@ -28,6 +28,8 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [likedPosts, setLikedPosts] = useState<{ [key: string]: boolean }>({});
   const [showStars, setShowStars] = useState(false);
+  const [sortOption, setSortOption] = useState("recency");
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     const loadSession = async () => {
@@ -37,10 +39,13 @@ export default function Dashboard() {
     };
     loadSession();
     
-    // Defer stars loading
     const timer = setTimeout(() => setShowStars(true), 100);
+    
+    // Always show popup on refresh
+    setShowPopup(true);
+    
     return () => clearTimeout(timer);
-  }, []); // run once on mount
+  }, []);
 
   useEffect(() => {
     const loadResponses = async () => {
@@ -51,7 +56,6 @@ export default function Dashboard() {
         setResponses(fetchedResponses);
         console.log("Fetched a total of", fetchedResponses.length, "responses.");
 
-        // Load liked posts from session data
         const likedMapping = session.likedPosts.reduce((acc, item) => {
           acc[item.postId] = true;
           return acc;
@@ -69,7 +73,7 @@ export default function Dashboard() {
       }
     };
     loadResponses();
-  }, [session]); // run when session changes
+  }, [session]);
 
   useEffect(() => {
     if (session) {
@@ -87,7 +91,6 @@ export default function Dashboard() {
     if (!currentlyLiked) {
       if (session.postsAvailable <= 0) return;
       
-      // Optimistic UI update
       setResponses((prev) => {
         const updated = [...prev];
         updated[index] = { ...response, likesPerPost: response.likesPerPost + 1 };
@@ -104,7 +107,6 @@ export default function Dashboard() {
       await setDoc(userRef, { likedPosts: newLikedPosts }, { merge: true });
       session.likedPosts = newLikedPosts;
     } else {
-      // Optimistic UI update
       setResponses((prev) => {
         const updated = [...prev];
         updated[index] = { ...response, likesPerPost: response.likesPerPost - 1 };
@@ -127,20 +129,51 @@ export default function Dashboard() {
         prev.likesPerPost > current.likesPerPost ? prev : current
       ).id
     );
-  }, [responses, session]); //handleLikes()
+  }, [responses, session]);
 
-  // Sorted responses: newest first (left to right)
-  const sortedResponses = useMemo(() => responses
-    .filter(
+  const sortedResponses = useMemo(() => {
+    const filtered = responses.filter(
       ({ response, fictitiousName }) =>
         response.toLowerCase().includes(searchQuery.toLowerCase()) ||
         fictitiousName.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()), 
-    [responses, searchQuery]);
+    );
+    return sortOption === "likecount"
+      ? filtered.sort((a, b) => b.likesPerPost - a.likesPerPost)
+      : filtered.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  }, [responses, searchQuery, sortOption]);
+  
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
   
   return (
     <div className="min-h-screen w-screen relative bg-gradient-to-b from-black to-gray-900 text-white">
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50 backdrop-blur-sm">
+          <div className="bg-gray-900 border border-amber-300/30 p-8 rounded-lg shadow-lg max-w-lg text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-b from-gray-800 to-gray-900 opacity-70 z-0"></div>
+            <div className="relative z-10">
+              <h2 className="text-2xl mb-6 text-amber-300 font-semibold">
+                What’s Happening on the Wall?
+              </h2>
+              <p className="mb-6 text-gray-200 leading-relaxed">
+                The living visualization on the staircase reflects both individual responses and the group's overall sentiment toward the prompt.  
+                <br /><br />
+                The orb’s color changes based on sentiment: green for optimism and red for pessimism.  
+                Individual and group sentiment scores are shown numerically on the wall.  
+                The sprites inside the orb represent total responses — one sprite equals 10 responses.  
+                The sprites dance to the room's music and will grow as more people respond throughout the night.  
+              </p>
+              <button 
+                onClick={handleClosePopup} 
+                className="px-6 py-2 bg-amber-300 hover:bg-amber-400 text-black font-medium rounded-md transition-colors duration-200 shadow-md"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {showStars && (
         <div className="fixed inset-0 z-0 will-change-transform">
           <StarsBackground
@@ -163,22 +196,24 @@ export default function Dashboard() {
           <NavigationLinks />
 
           {session && (
-            <div className="mb-6 sm:mb-10 bg-gray-800 bg-opacity-50 p-3 sm:p-4 rounded-lg border border-gray-700 w-full max-w-sm">
+            <div className="mb-6 sm:mb-6 bg-gray-800 bg-opacity-50 p-3 sm:p-4 rounded-lg border border-gray-700 w-full max-w-sm">
               <p className="text-sm sm:text-base text-amber-200">
                 Welcome, <span className="font-semibold">{session.username}</span>! 
                 You are to like <span className="font-bold text-yellow-500 ">3</span> posts that <span className="font-bold text-yellow-500 ">YOU</span> absolutely love!
               </p>
             </div>
           )}
-
-          {/*<SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />*/}
+          <select value={sortOption} onChange={(e) => setSortOption(e.target.value)} className="mb-6 w-full max-w-sm p-2 rounded-md bg-gray-800 border border-gray-700 text-white">
+            <option value="recency">Sort by Recency</option>
+            <option value="likecount">Sort by Like Count</option>
+          </select>
 
           {isLoading ? (
             <div className="flex justify-center items-center h-32 sm:h-64">
               <HashLoader color="#FFEE58" loading={isLoading} size={50} />
             </div>
           ) : sortedResponses.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 w-full max-w-6xl pb-8 sm:pb-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 w-full max-w-6xl pb-8 sm:pb-16 justify-items-center md:justify-items-stretch">
               {sortedResponses.map((item) => (
                 <ResponseCard
                   key={item.id}
@@ -190,7 +225,6 @@ export default function Dashboard() {
                   isLiked={likedPosts[item.id] || false}
                 />
               ))}
-              {/* FIX LATER??*/}
             </div>
           ) : (
             <div className="flex justify-center items-center h-32 sm:h-64">
@@ -202,4 +236,4 @@ export default function Dashboard() {
       </div>
     </div>
   );
-}// Dashboard()
+}

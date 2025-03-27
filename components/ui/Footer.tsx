@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
           rel="noopener noreferrer"
           className="underline"
         >
-          © 2025 Taubman College of Architecture and Urban Planning
+          Built by Taubman College Students
         </a>
       </p>
       <p className="text-xs sm:text-sm text-gray-400 mt-4">
