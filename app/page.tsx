@@ -188,7 +188,7 @@ export default function Home() {
             Ship My Response 🚀
             {/* <span className="text-2xl ml-2">🚀</span> */}
           </button>
-          <a className="underline text-blue-400 cursor-pointer" onClick={showHyperlink}>How will my response be used?</a>
+          {/*<a className="underline text-blue-400 cursor-pointer" onClick={showHyperlink}>How will my response be used?</a>*/}
         </div>
       </section>
 
