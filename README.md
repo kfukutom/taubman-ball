@@ -27,6 +27,8 @@ bun dev
 
 ## Gist  
 
-This program aims to create an interactive digital environment for Taubman College students to engage with an event that is both digitally compelling and seamlessly integrated. The system is designed for one-on-one user interactions, with an expected one-night user count of ~**300**.  
+This program aims to create an interactive digital environment for Taubman College students to engage with an event that is both digitally compelling and seamlessly integrated. The system is designed for one-on-one user interactions, with an expected one-night user count of ~**300**. 
+
+Credits for UI component(s) go to AceternityUI.
 
 Thanks for checking out our code base.
