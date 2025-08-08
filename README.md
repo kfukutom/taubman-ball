@@ -27,13 +27,6 @@ bun dev
 
 ## Gist  
 
-This program aims to create an interactive digital environment for Taubman College students to engage with an event that is both digitally compelling and seamlessly integrated. The system is designed for one-on-one user interactions, with an expected one-night user count of approximately **300**.  
+This program aims to create an interactive digital environment for Taubman College students to engage with an event that is both digitally compelling and seamlessly integrated. The system is designed for one-on-one user interactions, with an expected one-night user count of ~**300**.  
 
-### Key Features:  
-- Database retrieval for efficient data access with a binary-search tree 
-- Fast path searching for optimized event navigation  
-- Filtering and querying of user responses  
-- Modern UI built with an AceternityUI / ShadcnUI framework (Credits)
-- Bag of Word + Term frequency-inverse document frequency model for text importance
-
-Thanks for checking out our code base 💯
+Thanks for checking out our code base.
